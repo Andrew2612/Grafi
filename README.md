@@ -1,3 +1,3 @@
 # Grafi
 
-SuperMegaKvatroTurpo4WdMLG Proektik
+SuperMegaKvatroTurbo4WdMLG Proektik
