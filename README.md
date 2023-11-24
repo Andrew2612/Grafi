@@ -4,6 +4,6 @@ SuperMegaKvatroTurbo4WdMLG Proektik
 
 
 \\ Чтобы забилдить main.cpp
-g++ -c main.cpp -I"C:\Grafi\SFML-2.6.1\include"
+g++ -c main\main.cpp -I"C:\Grafi\SFML-2.6.1\include" -o main\main.o
 
-g++  main.o -o app -L"C:\Grafi\SFML-2.6.1\lib" -lsfml-graphics -lsfml-window -lsfml-system
+g++  main\main.o -o main\app -L"C:\Grafi\SFML-2.6.1\lib" -lsfml-graphics -lsfml-window -lsfml-system

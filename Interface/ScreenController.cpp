@@ -13,7 +13,7 @@ public:
     void LoadMenu()
     {
         sf::RectangleShape BeginButton(sf::Vector2f(100, 100));
-        BeginButton.setFillColor(sf::Color(0, 255, 0));
+        BeginButton.setFillColor(sf::Color(255, 255, 0));
         BeginButton.setOrigin(sf::Vector2f(50, 50));
         BeginButton.setPosition(sf::Vector2f(WIDTH/2, HEIGHT/2));
 
