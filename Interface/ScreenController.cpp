@@ -1,6 +1,7 @@
 #include<SFML\Graphics.hpp>
 #include<cstdint>
 #include<vector>
+#include<iostream>
 
 using u32 = uint32_t;
 
@@ -21,8 +22,6 @@ public:
     }
     void Update()
     {
-        window.clear(sf::Color::White);
-
         sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -31,15 +30,20 @@ public:
                 window.close();
             }
 		}
+
+        window.clear(sf::Color::White);
+
         for (u32 i = 0; i < buttons.size(); i++)
         {
             window.draw(buttons[i]);
         }
+
+        window.display();
     }
 
 private:
-    const u32 WIDTH = 450;
-    const u32 HEIGHT = 850;
+    const u32 WIDTH = 600;
+    const u32 HEIGHT = 600;
 
     sf::RenderWindow window;
 
