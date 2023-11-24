@@ -1,4 +1,5 @@
 #include<SFML/Graphics.hpp>
+#include"ApplicationState/ApplicationState.cpp"
 #include<time.h>
 #include<cstdint>
 #include<iostream>
@@ -10,7 +11,7 @@ int main()
     std::cerr << "=======================================\n";
     sf::Clock clock;
 
-    AppState& app_state = AppState::GetInstance();
+    AppState app_state;
 
     float dt;
 	while (app_state.Open())

@@ -1,5 +1,4 @@
-#include"ApplicationState.hpp"
-#include"../Interface/ScreenController.hpp"
+#include"../Interface/ScreenController.cpp"
 
 class AppState
 {
@@ -7,24 +6,18 @@ private:
     enum State {Menu = 0, Scene1 = 1};
     State state;
     Screen sc;
+public:
     AppState() : state(State::Menu)
     {
         ReturnToMenu();
     };
-public:
-    static AppState& GetInstance()
-    {
-        static AppState instance;
-        return instance;
-    }
-
-    void ReturnToMenu() {GetInstance().sc.LoadMenu();}
+    void ReturnToMenu() {sc.LoadMenu();}
 
     void Update()
     {
-        GetInstance().sc.Update();
+        sc.Update();
     }
 
-    bool Open() const {return GetInstance().sc.Open();}
+    bool Open() const {return sc.Open();}
 };
 

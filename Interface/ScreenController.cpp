@@ -1,4 +1,3 @@
-#include"ScreenController.hpp"
 #include<SFML\Graphics.hpp>
 #include<cstdint>
 #include<vector>
@@ -46,4 +45,3 @@ private:
 
     std::vector<sf::RectangleShape> buttons;
 };
-
