@@ -1,5 +1,5 @@
-#ifndef Grafi__Point_
-#define Grafi__Point_
+#ifndef Grafi__Edge_Point_
+#define Grafi__Edge_Point_
 
 class Edge;
 
