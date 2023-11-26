@@ -1,3 +1,4 @@
+//#include"Edge_Point.hpp"
 #include<string>
 #include<iostream>
 #include<cstdint>
@@ -14,7 +15,7 @@ public:
 
     Edge(const Edge& e) = delete;
     Edge& operator=(const Edge& e) = delete;
-    Edge(Edge&&) = default;
+    Edge(Edge&& e) = delete;
     Edge& operator=(Edge&& e) = delete;
 
     Point* Origin() const noexcept{return origin;}

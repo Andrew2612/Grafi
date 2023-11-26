@@ -1,5 +1,5 @@
 #include<SFML/Graphics.hpp>
-#include"../ApplicationState/ApplicationState.cpp"
+#include"../Interface/ScreenController.cpp"
 #include<time.h>
 #include<cstdint>
 #include<iostream>
@@ -11,12 +11,12 @@ int main()
     std::cerr << "=======================================\n";
     sf::Clock clock;
 
-    AppState app_state;
+    Screen sc;
 
     float dt;
-	while (app_state.Open())
+	while (sc.Open())
 	{
-        app_state.Update();
+        sc.Update();
 
 		dt = clock.getElapsedTime().asMicroseconds();
 
