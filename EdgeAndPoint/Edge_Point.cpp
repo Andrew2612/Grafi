@@ -24,6 +24,7 @@ public:
     Point* Origin() const noexcept{return origin;}
     Point* Destination() const noexcept{return destination;}
     float WayTime() const noexcept {return way_time;}
+    sf::RectangleShape* Shape() noexcept {return &line;} 
 
 private:
     sf::RectangleShape line;
@@ -100,7 +101,10 @@ Edge::Edge(Point* ori, Point* dest, const float way_time_)
     line.setSize(sf::Vector2f(length, 2));
 
     float angle = std::acos(way.x/length);
-    if (way.y > 0) {angle = -angle;}
+    if (way.y < 0) {angle = -angle;}
 
-    line.setRotation(angle);
+    line.setPosition(ori->Shape()->getPosition());
+    line.setRotation(180 * angle/3.141f);
+
+    line.setFillColor(sf::Color(0, 155, 120));
 };

@@ -102,16 +102,19 @@ void Screen::LoadScene1()
 
     
     sf::CircleShape* bb1 = new sf::CircleShape(10);
+    bb1->setOrigin(sf::Vector2f(10.0f, 10.0f));
     bb1->setFillColor(sf::Color(255, 0, 150));
     bb1->setPosition(sf::Vector2f(100, 100));
     points.push_back(new Point(0, bb1));
 
     sf::CircleShape* bb2 = new sf::CircleShape(10);
+    bb2->setOrigin(sf::Vector2f(10.0f, 10.0f));
     bb2->setFillColor(sf::Color(255, 0, 150));
     bb2->setPosition(sf::Vector2f(200, 200));
     points.push_back(new Point(1, bb2));
 
     sf::CircleShape* bb3 = new sf::CircleShape(10);
+    bb3->setOrigin(sf::Vector2f(10.0f, 10.0f));
     bb3->setFillColor(sf::Color(255, 0, 150));
     bb3->setPosition(sf::Vector2f(500, 300));
     points.push_back(new Point(2, bb3));
@@ -166,6 +169,10 @@ void Screen::Update()
     for (u32 i = 0; i < points.size(); i++)
     {
         window.draw(*points[i]->Shape());
+    }
+    for (u32 i = 0; i < edges.size(); i++)
+    {
+        window.draw(*edges[i]->Shape());
     }
 
     window.display();
