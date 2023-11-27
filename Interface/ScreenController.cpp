@@ -13,7 +13,7 @@ class Screen
 public:
     Screen()
     : window(sf::RenderWindow{sf::VideoMode(WIDTH, HEIGHT), "Grafi"}) {LoadMenu();}
-    ~Screen() {DeleteButtons();}
+    ~Screen() {DeleteObjects();}
 
     Screen(const Screen& s) = delete;
     Screen& operator=(const Screen& s) = delete;
@@ -28,10 +28,14 @@ public:
 
     void LoadScene1();
 
-    void Update();
+    void Update();    
 
 private:
-    void DeleteButtons()
+    void CreateButton(sf::Vector2f pos, void (Screen::*f)());
+
+    void CreatePoint(sf::Vector2f pos);
+
+    void DeleteObjects()
     {
         for (u32 i = 0; i < buttons.size(); i++)
         {
@@ -63,61 +67,31 @@ private:
     std::vector<Button*> buttons;
     std::vector<Point*> points;
     std::vector<Edge*> edges;
+
+    int origin = -1;
 };
 
 void Screen::Close()
 {
-    DeleteButtons();
+    DeleteObjects();
     window.close();
 }
 
 void Screen::LoadMenu()
 {
-    DeleteButtons();
-
-    sf::RectangleShape* bb = new sf::RectangleShape(sf::Vector2f(100, 100));
-    bb->setFillColor(sf::Color(255, 255, 0));
-    bb->setOrigin(sf::Vector2f(50, 50));
-    bb->setPosition(sf::Vector2f(WIDTH/2, HEIGHT/2 - 60));
-
-    sf::RectangleShape* bb1 = new sf::RectangleShape(sf::Vector2f(100, 100));
-    bb1->setFillColor(sf::Color(255, 255, 0));
-    bb1->setOrigin(sf::Vector2f(50, 50));
-    bb1->setPosition(sf::Vector2f(WIDTH/2, HEIGHT/2 + 60));
-
-    buttons.push_back(new Button(bb, this, &Close));
-    buttons.push_back(new Button(bb1, this, &LoadScene1));
+    DeleteObjects();
+    CreateButton(sf::Vector2f(WIDTH/2, HEIGHT/2 - 60), &Close);
+    CreateButton(sf::Vector2f(WIDTH/2, HEIGHT/2 + 60), &LoadScene1);
 }
 
 void Screen::LoadScene1()
 {
-    DeleteButtons();
+    DeleteObjects();
+    CreateButton(sf::Vector2f(WIDTH/2, 60), &LoadMenu);
 
-    sf::RectangleShape* bb = new sf::RectangleShape(sf::Vector2f(100, 100));
-    bb->setFillColor(sf::Color(255, 255, 0));
-    bb->setOrigin(sf::Vector2f(50, 50));
-    bb->setPosition(sf::Vector2f(WIDTH/2, 50));
-
-    buttons.push_back(new Button(bb, this, &LoadMenu));
-
-    
-    sf::CircleShape* bb1 = new sf::CircleShape(10);
-    bb1->setOrigin(sf::Vector2f(10.0f, 10.0f));
-    bb1->setFillColor(sf::Color(255, 0, 150));
-    bb1->setPosition(sf::Vector2f(100, 100));
-    points.push_back(new Point(0, bb1));
-
-    sf::CircleShape* bb2 = new sf::CircleShape(10);
-    bb2->setOrigin(sf::Vector2f(10.0f, 10.0f));
-    bb2->setFillColor(sf::Color(255, 0, 150));
-    bb2->setPosition(sf::Vector2f(200, 200));
-    points.push_back(new Point(1, bb2));
-
-    sf::CircleShape* bb3 = new sf::CircleShape(10);
-    bb3->setOrigin(sf::Vector2f(10.0f, 10.0f));
-    bb3->setFillColor(sf::Color(255, 0, 150));
-    bb3->setPosition(sf::Vector2f(500, 300));
-    points.push_back(new Point(2, bb3));
+    CreatePoint(sf::Vector2f(100, 100));
+    CreatePoint(sf::Vector2f(200, 200));
+    CreatePoint(sf::Vector2f(500, 300));
 
     edges.push_back(new Edge(points[0], points[1], 10));
     edges.push_back(new Edge(points[1], points[2], 100));
@@ -154,7 +128,10 @@ void Screen::Update()
             {
                 if (points[i]->Shape()->getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
                 {
-                    points[i]->FindPath(edges, points.size());
+                    if (origin < 0) {origin = i; std::cerr << "Origin " << i << '\n';break;}
+
+                    points[origin]->FindPath(edges, points.size(), i);
+                    origin = -1;
                     break;
                 }
             }
@@ -176,4 +153,23 @@ void Screen::Update()
     }
 
     window.display();
+}
+
+void Screen::CreateButton(sf::Vector2f pos, void (Screen::*f)())
+{
+    sf::RectangleShape* shape = new sf::RectangleShape(sf::Vector2f(100, 100));
+    shape->setFillColor(sf::Color(255, 255, 0));
+    shape->setOrigin(sf::Vector2f(50, 50));
+    shape->setPosition(pos);
+
+    buttons.push_back(new Button(shape, this, f));
+}
+
+void Screen::CreatePoint(sf::Vector2f pos)
+{
+    sf::CircleShape* shape = new sf::CircleShape(10);
+    shape->setOrigin(sf::Vector2f(10.0f, 10.0f));
+    shape->setFillColor(sf::Color(255, 0, 150));
+    shape->setPosition(pos);
+    points.push_back(new Point(points.size(), shape));
 }

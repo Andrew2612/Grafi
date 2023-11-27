@@ -14,7 +14,7 @@ class Point;
 class Edge
 {
 public:
-    Edge(Point* ori, Point* dest, const float way_time_);
+    Edge(Point* ori, Point* dest, const float way_time_, const bool singleSided);
 
     Edge(const Edge& e) = delete;
     Edge& operator=(const Edge& e) = delete;
@@ -24,6 +24,7 @@ public:
     Point* Origin() const noexcept{return origin;}
     Point* Destination() const noexcept{return destination;}
     float WayTime() const noexcept {return way_time;}
+    bool SingleSided() const noexcept {return single_sided;}
     sf::RectangleShape* Shape() noexcept {return &line;} 
 
 private:
@@ -31,6 +32,7 @@ private:
     Point* origin;
     Point* destination;
     float way_time;
+    bool single_sided;
 };
 
 
@@ -58,7 +60,7 @@ public:
     u32 PointNumber() const noexcept {return point_number;}
     float DelayTime() const noexcept {return delay_time;}
 
-    void FindPath(std::vector<Edge*>& edges, u32 num_of_points) const
+    void FindPath(std::vector<Edge*>& edges, u32 num_of_points, u32 destination_num) const
     {
         int distance[num_of_points];
         for (u32 i = 0; i < num_of_points; i++)
@@ -66,6 +68,8 @@ public:
             distance[i] = INT_MAX;
         }
         distance[point_number] = 0;
+
+        int parent[num_of_points] = {-1};
 
         
         for (u32 i = 0; i < num_of_points; i++)
@@ -78,21 +82,36 @@ public:
                 {
                     distance[edges[j]->Destination()->PointNumber()] = 
                     distance[edges[j]->Origin()->PointNumber()] + edges[j]->WayTime();
+                    parent[edges[j]->Destination()->PointNumber()] = edges[j]->Origin()->PointNumber();
+                }
+
+                if (edges[j]->SingleSided()) {continue;}
+
+                if (distance[edges[j]->Destination()->PointNumber()] != INT_MAX
+                    && distance[edges[j]->Destination()->PointNumber()] + edges[j]->WayTime()
+                        < distance[edges[j]->Origin()->PointNumber()])
+                {
+                    distance[edges[j]->Origin()->PointNumber()] = 
+                    distance[edges[j]->Destination()->PointNumber()] + edges[j]->WayTime();
+                    parent[edges[j]->Origin()->PointNumber()] = edges[j]->Destination()->PointNumber();
                 }
             }
         }
 
-        std::cout << "Vertex Distance from Origin: " << std::endl;
-        for (int i = 0; i < num_of_points; i++)
+        std::cerr << "Distance from Origin: "<< distance[destination_num] << '\n';
+        std::cerr << "Way: "<< destination_num << ' ';
+        while (destination_num != point_number)
         {
-            std::cout << i << "\t\t" << distance[i] << std::endl;
-        } 
+            std::cerr << parent[destination_num] << ' ';
+            destination_num = parent[destination_num];
+        }
+        std::cerr << std::endl;
     }
 };
 
 
-Edge::Edge(Point* ori, Point* dest, const float way_time_)
-    : destination(dest), origin(ori), way_time(way_time_)
+Edge::Edge(Point* ori, Point* dest, const float way_time_, const bool singleSided = false)
+    : destination(dest), origin(ori), way_time(way_time_), single_sided(singleSided)
 {
     line = sf::RectangleShape(ori->Shape()->getPosition());
 
