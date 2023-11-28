@@ -1,6 +1,6 @@
-//#include"ScreenController.hpp"
+#include"ScreenController.hpp"
 #include<SFML\Graphics.hpp>
-#include"Button.cpp"
+#include"Button.hpp"
 #include"../EdgeAndPoint/Edge_Point.cpp"
 #include<cstdint>
 #include<vector>
@@ -8,68 +8,26 @@
 
 using u32 = uint32_t;
 
-class Screen
+void Screen::DeleteObjects()
 {
-public:
-    Screen()
-    : window(sf::RenderWindow{sf::VideoMode(WIDTH, HEIGHT), "Grafi"}) {LoadMenu();}
-    ~Screen() {DeleteObjects();}
-
-    Screen(const Screen& s) = delete;
-    Screen& operator=(const Screen& s) = delete;
-    Screen(Screen&& s) = delete;
-    Screen& operator=(Screen&& s) = delete;
-
-    bool Open() const {return window.isOpen();}
-
-    void Close();
-
-    void LoadMenu();
-
-    void LoadScene1();
-
-    void Update();    
-
-private:
-    void CreateButton(sf::Vector2f pos, void (Screen::*f)());
-
-    void CreatePoint(sf::Vector2f pos);
-
-    void DeleteObjects()
+    for (u32 i = 0; i < buttons.size(); i++)
     {
-        for (u32 i = 0; i < buttons.size(); i++)
-        {
-            delete buttons[i];
-        }
-        buttons.clear();
-
-        for (u32 i = 0; i < points.size(); i++)
-        {
-            delete points[i];
-        }
-        points.clear();
-
-        for (u32 i = 0; i < edges.size(); i++)
-        {
-            delete edges[i];
-        }
-        edges.clear();
+        delete buttons[i];
     }
+    buttons.clear();
 
-    const u32 WIDTH = 600;
-    const u32 HEIGHT = 600;
+    for (u32 i = 0; i < points.size(); i++)
+    {
+        delete points[i];
+    }
+    points.clear();
 
-    sf::RenderWindow window;
-
-    sf::Vector2i mouse_pos;
-    sf::Event event;
-
-    std::vector<Button*> buttons;
-    std::vector<Point*> points;
-    std::vector<Edge*> edges;
-
-    int origin = -1;
-};
+    for (u32 i = 0; i < edges.size(); i++)
+    {
+        delete edges[i];
+    }
+    edges.clear();
+}
 
 void Screen::Close()
 {
@@ -100,43 +58,7 @@ void Screen::LoadScene1()
 
 void Screen::Update()
 {
-    while (window.pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed)
-        {
-            Close();
-        }
-
-        if (event.type == sf::Event::MouseButtonPressed
-            && event.mouseButton.button == sf::Mouse::Left)
-        {
-            bool found = false;
-            mouse_pos = sf::Mouse::getPosition(window);
-            for (u32 i = 0; i < buttons.size(); i++)
-            {
-                if (buttons[i]->Shape()->getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
-                {
-                    buttons[i]->Call();
-                    found = true;
-                    break;
-                }
-            }
-
-            if (found) {break;}
-
-            for (u32 i = 0; i < points.size(); i++)
-            {
-                if (points[i]->Shape()->getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
-                {
-                    if (origin < 0) {origin = i; std::cerr << "Origin " << i << '\n';break;}
-
-                    points[origin]->FindPath(edges, points.size(), i);
-                    origin = -1;
-                    break;
-                }
-            }
-        }
-    }
+    input.GetInput();
     window.clear(sf::Color::White);
 
     for (u32 i = 0; i < buttons.size(); i++)
@@ -172,4 +94,21 @@ void Screen::CreatePoint(sf::Vector2f pos)
     shape->setFillColor(sf::Color(255, 0, 150));
     shape->setPosition(pos);
     points.push_back(new Point(points.size(), shape));
+}
+
+void InputHandler::GetInput()
+{
+    while (sc->window.pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
+        {
+            sc->Close();
+        }
+
+        if (event.type == sf::Event::MouseButtonPressed
+            && event.mouseButton.button == sf::Mouse::Left)
+        {
+            ActicatePathFinder();
+        }
+    }
 }

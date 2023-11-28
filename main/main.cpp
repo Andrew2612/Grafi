@@ -1,5 +1,5 @@
 #include<SFML/Graphics.hpp>
-#include"../Interface/ScreenController.cpp"
+#include"../Interface/ScreenController.hpp"
 #include<time.h>
 #include<cstdint>
 #include<iostream>
