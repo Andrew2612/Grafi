@@ -45,6 +45,7 @@ private:
     const u32 HEIGHT = 600;
 
     sf::RenderWindow window;
+    sf::View view{sf::FloatRect(0, 0, WIDTH, HEIGHT)};
 
     std::vector<Button*> buttons;
     std::vector<Point*> points;

@@ -5,6 +5,7 @@
 #include"ScreenController.hpp"
 #include<vector>
 #include<cstdint>
+#include<time.h>
 
 using u32 = uint32_t;
 
@@ -14,10 +15,20 @@ private:
     std::vector<u32> way;
     int origin_waypoint = -1;
 
-    sf::Vector2i mouse_pos;
-    sf::Event event;
-
     Screen* sc;
+
+    sf::Event event;
+    sf::Vector2i mouse_prev_pos;
+    sf::Vector2i mouse_pos;
+    sf::Clock clock;
+    float dt;
+    const float CLICK_TIME = 0.3f;
+
+    float current_zoom = 1;
+
+    void ActicatePressed();
+    void Move();
+    void Scroll(float scroll);
 public:
     InputHandler(Screen* screen) : sc(screen) {}
 
@@ -27,7 +38,6 @@ public:
     InputHandler& operator=(InputHandler&& i) = delete;
 
     void GetInput();
-    void ActicatePathFinder();
 };
 
 #endif

@@ -2,7 +2,47 @@
 #include"InputHandler.hpp"
 #include"../EdgeAndPoint/Edge_Point.hpp"
 
-void InputHandler::ActicatePathFinder()
+void InputHandler::GetInput()
+{
+    while (sc->window.pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
+        {
+            sc->Close();
+            return;
+        }
+
+        if (event.type == sf::Event::MouseButtonPressed
+            && event.mouseButton.button == sf::Mouse::Left)
+        {
+            clock.restart();
+            mouse_prev_pos = sf::Mouse::getPosition(sc->window);
+            return;
+        }
+
+        if (event.type == sf::Event::MouseButtonReleased
+            && event.mouseButton.button == sf::Mouse::Left)
+        {
+            dt = clock.getElapsedTime().asSeconds();
+            if (dt < CLICK_TIME)
+            {
+                ActicatePressed();
+            }
+            return;
+        }
+
+        if (event.type == sf::Event::MouseMoved)
+        {
+            Move();
+        }
+        if (event.type == sf::Event::MouseWheelScrolled)
+        {
+            Scroll(event.mouseWheelScroll.delta);
+        }
+    }
+}
+
+void InputHandler::ActicatePressed()
 {
     bool flag = false;
     mouse_pos = sf::Mouse::getPosition(sc->window);
@@ -32,10 +72,30 @@ void InputHandler::ActicatePathFinder()
                 way.clear();
                 return;
             }
-
+            if (origin_waypoint == i) {return;}
             way = sc->points[origin_waypoint]->FindPath(sc->edges, sc->points.size(), i);
             origin_waypoint = -1;
             return;
         }
     }
+}
+
+void InputHandler::Move()
+{
+    mouse_pos = sf::Mouse::getPosition(sc->window);
+
+    sc->view.move(current_zoom * (mouse_pos.x - mouse_prev_pos.x),
+        current_zoom * (mouse_pos.y - mouse_prev_pos.y));
+}
+
+void InputHandler::Scroll(float scroll)
+{
+    // float tmp = current_zoom;
+    // if (scroll > 0)
+    // {
+    //     tmp -= scroll;
+    // }
+    // current_zoom = 
+    // event.mouseWheelScroll.y
+    std::cerr << scroll << '\n';
 }

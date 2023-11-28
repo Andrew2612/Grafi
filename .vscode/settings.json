@@ -55,5 +55,6 @@
         "map": "cpp",
         "set": "cpp",
         "iomanip": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "C:/Grafi/main"
 }

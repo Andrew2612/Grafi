@@ -96,19 +96,3 @@ void Screen::CreatePoint(sf::Vector2f pos)
     points.push_back(new Point(points.size(), shape));
 }
 
-void InputHandler::GetInput()
-{
-    while (sc->window.pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed)
-        {
-            sc->Close();
-        }
-
-        if (event.type == sf::Event::MouseButtonPressed
-            && event.mouseButton.button == sf::Mouse::Left)
-        {
-            ActicatePathFinder();
-        }
-    }
-}
