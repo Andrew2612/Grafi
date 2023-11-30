@@ -46,6 +46,7 @@ private:
 
     sf::RenderWindow window;
     sf::View view{sf::FloatRect(0, 0, WIDTH, HEIGHT)};
+    sf::View default_view = window.getDefaultView();
 
     std::vector<Button*> buttons;
     std::vector<Point*> points;

@@ -29,7 +29,7 @@ private:
     const float MIN_ZOOM = 0.3;
     const float MAX_ZOOM = 3;
 
-    void ActicatePressed();
+    void OnClick();
     void Move();
     void Scroll(int scroll);
 public:

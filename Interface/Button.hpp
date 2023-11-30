@@ -29,7 +29,7 @@ public:
         return shape;
     }
 
-    void Call()
+    void OnClick()
     {
         func_ptr(sc);
     }

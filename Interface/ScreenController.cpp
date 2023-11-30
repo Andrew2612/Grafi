@@ -60,12 +60,9 @@ void Screen::Update()
 {
     input.GetInput();
     window.clear(sf::Color::White);
-    window.setView(view);
 
-    for (u32 i = 0; i < buttons.size(); i++)
-    {
-        window.draw(*buttons[i]->Shape());
-    }
+
+    window.setView(view);
     for (u32 i = 0; i < points.size(); i++)
     {
         window.draw(*points[i]->Shape());
@@ -73,6 +70,11 @@ void Screen::Update()
     for (u32 i = 0; i < edges.size(); i++)
     {
         window.draw(*edges[i]->Shape());
+    }
+    window.setView(default_view);
+    for (u32 i = 0; i < buttons.size(); i++)
+    {
+        window.draw(*buttons[i]->Shape());
     }
 
     window.display();

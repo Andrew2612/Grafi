@@ -28,7 +28,7 @@ void InputHandler::GetInput()
             dt = clock.getElapsedTime().asSeconds();
             if (dt < CLICK_TIME)
             {
-                ActicatePressed();
+                OnClick();
             }
             mouse_prev_pos = sf::Mouse::getPosition(sc->window);
             return;
@@ -46,7 +46,7 @@ void InputHandler::GetInput()
     }
 }
 
-void InputHandler::ActicatePressed()
+void InputHandler::OnClick()
 {
     bool flag = false;
     mouse_pos = sf::Mouse::getPosition(sc->window);
@@ -54,7 +54,7 @@ void InputHandler::ActicatePressed()
     {
         if (sc->buttons[i]->Shape()->getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
         {
-            sc->buttons[i]->Call();
+            sc->buttons[i]->OnClick();
             flag = true;
             return;
         }
