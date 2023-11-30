@@ -25,10 +25,13 @@ private:
     const float CLICK_TIME = 0.3f;
 
     float current_zoom = 1;
+    const float ZOOM_SPEED = 0.95;
+    const float MIN_ZOOM = 0.3;
+    const float MAX_ZOOM = 3;
 
     void ActicatePressed();
     void Move();
-    void Scroll(float scroll);
+    void Scroll(int scroll);
 public:
     InputHandler(Screen* screen) : sc(screen) {}
 

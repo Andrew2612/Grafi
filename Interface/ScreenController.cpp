@@ -60,6 +60,7 @@ void Screen::Update()
 {
     input.GetInput();
     window.clear(sf::Color::White);
+    window.setView(view);
 
     for (u32 i = 0; i < buttons.size(); i++)
     {

@@ -4,6 +4,8 @@
 
 void InputHandler::GetInput()
 {
+    mouse_pos = sf::Mouse::getPosition(sc->window);
+
     while (sc->window.pollEvent(event))
     {
         if (event.type == sf::Event::Closed)
@@ -28,10 +30,11 @@ void InputHandler::GetInput()
             {
                 ActicatePressed();
             }
+            mouse_prev_pos = sf::Mouse::getPosition(sc->window);
             return;
         }
 
-        if (event.type == sf::Event::MouseMoved)
+        if (event.type == sf::Event::MouseMoved && sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
             Move();
         }
@@ -39,6 +42,7 @@ void InputHandler::GetInput()
         {
             Scroll(event.mouseWheelScroll.delta);
         }
+        mouse_prev_pos = sf::Mouse::getPosition(sc->window);
     }
 }
 
@@ -82,20 +86,19 @@ void InputHandler::ActicatePressed()
 
 void InputHandler::Move()
 {
-    mouse_pos = sf::Mouse::getPosition(sc->window);
-
-    sc->view.move(current_zoom * (mouse_pos.x - mouse_prev_pos.x),
-        current_zoom * (mouse_pos.y - mouse_prev_pos.y));
+    sc->view.setCenter(sc->view.getCenter() + current_zoom * static_cast<sf::Vector2f>(mouse_prev_pos - mouse_pos));
 }
 
-void InputHandler::Scroll(float scroll)
+void InputHandler::Scroll(int scroll)
 {
-    // float tmp = current_zoom;
-    // if (scroll > 0)
-    // {
-    //     tmp -= scroll;
-    // }
-    // current_zoom = 
-    // event.mouseWheelScroll.y
-    std::cerr << scroll << '\n';
+    if (scroll > 0 && current_zoom * ZOOM_SPEED > MIN_ZOOM)
+    {
+        sc->view.zoom(ZOOM_SPEED);
+        current_zoom *= ZOOM_SPEED;
+    }
+    if (scroll < 0 && current_zoom / ZOOM_SPEED < MAX_ZOOM)
+    {
+        sc->view.zoom(1/ZOOM_SPEED);
+        current_zoom /= ZOOM_SPEED;
+    }
 }
