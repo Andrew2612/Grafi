@@ -3,7 +3,6 @@
 
 #include<SFML\Graphics.hpp>
 #include"Button.hpp"
-#include"InputHandler.hpp"
 #include"../EdgeAndPoint/Edge_Point.hpp"
 #include<cstdint>
 #include<vector>
@@ -14,7 +13,13 @@ class Screen
 {
 public:
     Screen()
-    : window(sf::RenderWindow{sf::VideoMode(WIDTH, HEIGHT), "Grafi"}) {LoadMenu();}
+    : window(sf::RenderWindow{sf::VideoMode(2*SCREEN_CENTER.x, 2*SCREEN_CENTER.y), "Grafi"})
+    {
+        font.loadFromFile("arial.ttf");
+        point_label.setFont(font);
+        point_label.setFillColor(sf::Color::Black);
+        LoadMenu();
+    }
 
     ~Screen() {DeleteObjects();}
 
@@ -39,20 +44,22 @@ private:
 
     void CreatePoint(sf::Vector2f pos);
 
+    void SetPointLabel(int index);
+
     void DeleteObjects();
 
-    const u32 WIDTH = 600;
-    const u32 HEIGHT = 600;
+    const sf::Vector2f SCREEN_CENTER{300, 300};
 
     sf::RenderWindow window;
-    sf::View view{sf::FloatRect(0, 0, WIDTH, HEIGHT)};
+    sf::View view{sf::FloatRect(0, 0, 2*SCREEN_CENTER.x, 2*SCREEN_CENTER.y)};
     sf::View default_view = window.getDefaultView();
 
     std::vector<Button*> buttons;
     std::vector<Point*> points;
     std::vector<Edge*> edges;
 
-    InputHandler input = InputHandler(this);
+    sf::Font font;
+    sf::Text point_label;
 };
 
 #endif

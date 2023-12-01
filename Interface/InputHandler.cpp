@@ -4,7 +4,8 @@
 
 void InputHandler::GetInput()
 {
-    mouse_pos = sf::Mouse::getPosition(sc->window);
+    mouse_pos = sc->view.getCenter() - current_zoom *(sc->SCREEN_CENTER - static_cast<sf::Vector2f>(sf::Mouse::getPosition(sc->window)));
+    current_point_index = GetPointTargetIndex();
 
     while (sc->window.pollEvent(event))
     {
@@ -18,8 +19,8 @@ void InputHandler::GetInput()
             && event.mouseButton.button == sf::Mouse::Left)
         {
             clock.restart();
-            mouse_prev_pos = sf::Mouse::getPosition(sc->window);
-            return;
+            
+            continue;
         }
 
         if (event.type == sf::Event::MouseButtonReleased
@@ -30,63 +31,74 @@ void InputHandler::GetInput()
             {
                 OnClick();
             }
-            mouse_prev_pos = sf::Mouse::getPosition(sc->window);
-            return;
+            continue;
         }
 
-        if (event.type == sf::Event::MouseMoved && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        if (event.type == sf::Event::MouseMoved)
         {
-            Move();
+            sc->SetPointLabel(current_point_index);
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                Move();
+            }
         }
         if (event.type == sf::Event::MouseWheelScrolled)
         {
             Scroll(event.mouseWheelScroll.delta);
         }
-        mouse_prev_pos = sf::Mouse::getPosition(sc->window);
     }
+    mouse_prev_pos = mouse_pos;
 }
 
-void InputHandler::OnClick()
+
+int InputHandler::GetPointTargetIndex()
 {
-    bool flag = false;
-    mouse_pos = sf::Mouse::getPosition(sc->window);
-    for (u32 i = 0; i < sc->buttons.size(); i++)
-    {
-        if (sc->buttons[i]->Shape()->getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
-        {
-            sc->buttons[i]->OnClick();
-            flag = true;
-            return;
-        }
-    }
-
-    if (flag) {return;}
-
     for (u32 i = 0; i < sc->points.size(); i++)
     {
         if (sc->points[i]->Shape()->getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
         {
-            if (origin_waypoint < 0)
+            return i;
+        }
+    }
+    return -1;
+}
+
+void InputHandler::OnClick()
+{
+    if (current_point_index < 0)
+    {
+        for (u32 i = 0; i < sc->buttons.size(); i++)
+        {
+            if (sc->buttons[i]->Shape()->getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
             {
-                origin_waypoint = i;
-                for (u32 j = 0; j < way.size(); j++)
-                {
-                    sc->edges[way[j]]->TurnOff();
-                }
-                way.clear();
+                sc->buttons[i]->OnClick();
                 return;
             }
-            if (origin_waypoint == i) {return;}
-            way = sc->points[origin_waypoint]->FindPath(sc->edges, sc->points.size(), i);
-            origin_waypoint = -1;
+        }
+        return;
+    }
+    else
+    {
+        if (origin_waypoint < 0)
+        {
+            origin_waypoint = current_point_index;
+            for (u32 j = 0; j < way.size(); j++)
+            {
+                sc->edges[way[j]]->TurnOff();
+            }
+            way.clear();
             return;
         }
+        if (origin_waypoint == current_point_index) {return;}
+        way = sc->points[origin_waypoint]->FindPath(sc->edges, sc->points.size(), current_point_index);
+        origin_waypoint = -1;
+        return;
     }
 }
 
 void InputHandler::Move()
 {
-    sc->view.setCenter(sc->view.getCenter() + current_zoom * static_cast<sf::Vector2f>(mouse_prev_pos - mouse_pos));
+    sc->view.setCenter(sc->view.getCenter() + current_zoom * (mouse_prev_pos - mouse_pos));
 }
 
 void InputHandler::Scroll(int scroll)

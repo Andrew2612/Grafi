@@ -7,8 +7,11 @@ int main()
 {
     std::cerr << "=======================================\n";
     Screen sc;
+    InputHandler input{&sc};
+
 	while (sc.Open())
 	{
+        input.GetInput();
         sc.Update();
     }
     

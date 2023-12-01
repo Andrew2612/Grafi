@@ -18,8 +18,10 @@ private:
     Screen* sc;
 
     sf::Event event;
-    sf::Vector2i mouse_prev_pos;
-    sf::Vector2i mouse_pos;
+    sf::Vector2f mouse_prev_pos;
+    sf::Vector2f mouse_pos;
+    int current_point_index;
+
     sf::Clock clock;
     float dt;
     const float CLICK_TIME = 0.3f;
@@ -29,6 +31,7 @@ private:
     const float MIN_ZOOM = 0.3;
     const float MAX_ZOOM = 3;
 
+    int GetPointTargetIndex();
     void OnClick();
     void Move();
     void Scroll(int scroll);

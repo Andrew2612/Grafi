@@ -4,6 +4,7 @@
 #include"../EdgeAndPoint/Edge_Point.cpp"
 #include<cstdint>
 #include<vector>
+#include<string>
 #include<iostream>
 
 using u32 = uint32_t;
@@ -38,14 +39,14 @@ void Screen::Close()
 void Screen::LoadMenu()
 {
     DeleteObjects();
-    CreateButton(sf::Vector2f(WIDTH/2, HEIGHT/2 - 60), &Close);
-    CreateButton(sf::Vector2f(WIDTH/2, HEIGHT/2 + 60), &LoadScene1);
+    CreateButton(sf::Vector2f(SCREEN_CENTER.x, SCREEN_CENTER.y - 60), &Close);
+    CreateButton(sf::Vector2f(SCREEN_CENTER.x, SCREEN_CENTER.y + 60), &LoadScene1);
 }
 
 void Screen::LoadScene1()
 {
     DeleteObjects();
-    CreateButton(sf::Vector2f(WIDTH/2, 60), &LoadMenu);
+    CreateButton(sf::Vector2f(SCREEN_CENTER.x, 60), &LoadMenu);
 
     CreatePoint(sf::Vector2f(100, 100));
     CreatePoint(sf::Vector2f(200, 200));
@@ -58,9 +59,7 @@ void Screen::LoadScene1()
 
 void Screen::Update()
 {
-    input.GetInput();
     window.clear(sf::Color::White);
-
 
     window.setView(view);
     for (u32 i = 0; i < points.size(); i++)
@@ -71,6 +70,11 @@ void Screen::Update()
     {
         window.draw(*edges[i]->Shape());
     }
+    if (!point_label.getString().isEmpty())
+    {
+        window.draw(point_label);
+    }
+
     window.setView(default_view);
     for (u32 i = 0; i < buttons.size(); i++)
     {
@@ -99,3 +103,16 @@ void Screen::CreatePoint(sf::Vector2f pos)
     points.push_back(new Point(points.size(), shape));
 }
 
+void Screen::SetPointLabel(int index)
+{
+    if (index < 0)
+    {
+        if (point_label.getString().isEmpty()) {return;}
+
+        point_label.setString("");
+        return;
+    }
+
+    point_label.setString(std::to_string(index));
+    point_label.setPosition(sf::Vector2f(0, 15) + points[index]->Shape()->getPosition());
+}
