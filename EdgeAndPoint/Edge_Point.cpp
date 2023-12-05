@@ -19,7 +19,7 @@ std::vector<u32> Point::FindPath(const std::vector<Edge*>& edges, u32 num_of_poi
 
     int edge_to_prev[num_of_points] = {-1};
 
-    
+
     for (u32 i = 0; i < num_of_points; i++)
     {
         for (u32 j = 0; j < edges.size(); j++)

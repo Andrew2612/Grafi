@@ -2,20 +2,18 @@
 #define Grafi__Button_
 
 #include<SFML\Graphics.hpp>
-#include"ScreenController.hpp"
 #include<functional>
 
-class Screen;
-
+template<class T>
 class Button
 {
 private:
-    Screen* sc;
-    std::function<void(Screen*)> func_ptr;
+    T* owner;
+    std::function<void(T*)> func_ptr;
     sf::Shape* shape;
 public:
-    Button(sf::Shape* shape_, Screen* screen, void (Screen::*func)())
-    : shape(shape_), sc(screen), func_ptr(func) {}
+    Button(sf::Shape* shape_, T* o, void (T::*func)())
+    : shape(shape_), owner(o), func_ptr(func) {}
 
     ~Button() {delete shape;}
 
@@ -31,7 +29,7 @@ public:
 
     void OnClick()
     {
-        func_ptr(sc);
+        func_ptr(owner);
     }
 };
 

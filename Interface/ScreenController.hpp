@@ -54,7 +54,7 @@ private:
     sf::View view{sf::FloatRect(0, 0, 2*SCREEN_CENTER.x, 2*SCREEN_CENTER.y)};
     sf::View default_view = window.getDefaultView();
 
-    std::vector<Button*> buttons;
+    std::vector<Button<Screen>*> buttons;
     std::vector<Point*> points;
     std::vector<Edge*> edges;
 
