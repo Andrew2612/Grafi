@@ -1,0 +1,39 @@
+{
+    "map": {
+        "width": 1000,
+        "height": 1000,
+        "zoom_max": 2,
+        "zoom_min": 1
+    },
+    "points": [
+        {
+            "posX": 100,
+            "posY": 100
+        },
+        {
+            "posX": 200,
+            "posY": 300
+        },
+        {
+            "posX": 500,
+            "posY": 300
+        }
+    ],
+    "edges": [
+        {
+            "origin": 0,
+            "dest": 1,
+            "weight": 10
+        },
+        {
+            "origin": 1,
+            "dest": 2,
+            "weight": 100
+        },
+        {
+            "origin": 0,
+            "dest": 2,
+            "weight": 50
+        }
+    ]
+}

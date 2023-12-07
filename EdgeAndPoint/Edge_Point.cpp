@@ -19,7 +19,6 @@ std::vector<u32> Point::FindPath(const std::vector<Edge*>& edges, u32 num_of_poi
 
     int edge_to_prev[num_of_points] = {-1};
 
-
     for (u32 i = 0; i < num_of_points; i++)
     {
         for (u32 j = 0; j < edges.size(); j++)
@@ -33,7 +32,7 @@ std::vector<u32> Point::FindPath(const std::vector<Edge*>& edges, u32 num_of_poi
                 edge_to_prev[edges[j]->Destination()->PointNumber()] = j;
             }
 
-            if (edges[j]->SingleSided()) {continue;}
+            if (edges[j]->SingleSided()) {std::cerr << "Baddd\n"; continue;}
 
             if (distance[edges[j]->Destination()->PointNumber()] != INT_MAX
                 && distance[edges[j]->Destination()->PointNumber()] + edges[j]->WayTime()
@@ -63,7 +62,7 @@ std::vector<u32> Point::FindPath(const std::vector<Edge*>& edges, u32 num_of_poi
     return way;
 }
 
-Edge::Edge(Point* ori, Point* dest, const float way_time_, const bool singleSided = false)
+Edge::Edge(Point* ori, Point* dest, const u32 way_time_, const bool singleSided)
     : destination(dest), origin(ori), way_time(way_time_), single_sided(singleSided)
 {
     line = sf::RectangleShape(ori->Shape()->getPosition());

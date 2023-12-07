@@ -1,11 +1,13 @@
 #include<SFML\Graphics.hpp>
 #include"InputHandler.hpp"
+#include"ScreenController.hpp"
 #include"../EdgeAndPoint/Edge_Point.hpp"
 
 void InputHandler::GetInput()
 {
     mouse_pos = sc->view.getCenter() - current_zoom *(sc->SCREEN_CENTER - static_cast<sf::Vector2f>(sf::Mouse::getPosition(sc->window)));
-    current_point_index = GetPointTargetIndex();
+    if (sc->map) {current_point_index = GetPointTargetIndex();}
+    else {current_point_index = -1;}
 
     while (sc->window.pollEvent(event))
     {
@@ -33,7 +35,7 @@ void InputHandler::GetInput()
             }
             continue;
         }
-
+        if (!sc->map) {continue;}
         if (event.type == sf::Event::MouseMoved)
         {
             sc->SetPointLabel(current_point_index);
@@ -53,9 +55,9 @@ void InputHandler::GetInput()
 
 int InputHandler::GetPointTargetIndex()
 {
-    for (u32 i = 0; i < sc->points.size(); i++)
+    for (u32 i = 0; i < sc->map->points.size(); i++)
     {
-        if (sc->points[i]->Shape()->getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
+        if (sc->map->points[i]->Shape()->getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
         {
             return i;
         }
@@ -84,13 +86,13 @@ void InputHandler::OnClick()
             origin_waypoint = current_point_index;
             for (u32 j = 0; j < way.size(); j++)
             {
-                sc->edges[way[j]]->TurnOff();
+                sc->map->edges[way[j]]->TurnOff();
             }
             way.clear();
             return;
         }
         if (origin_waypoint == current_point_index) {return;}
-        way = sc->points[origin_waypoint]->FindPath(sc->edges, sc->points.size(), current_point_index);
+        way = sc->map->points[origin_waypoint]->FindPath(sc->map->edges, sc->map->points.size(), current_point_index);
         origin_waypoint = -1;
         return;
     }
@@ -98,17 +100,27 @@ void InputHandler::OnClick()
 
 void InputHandler::Move()
 {
+    sf::Vector2f new_center(sc->view.getCenter() + current_zoom * (mouse_prev_pos - mouse_pos));
+    
+    if (new_center.x + sc->SCREEN_CENTER.x > sc->map->width || new_center.x - sc->SCREEN_CENTER.x < 0)
+    {
+        new_center.x = sc->view.getCenter().x;
+    }
+    if (new_center.y + sc->SCREEN_CENTER.y > sc->map->height || new_center.y - sc->SCREEN_CENTER.y < 0)
+    {
+        new_center.y = sc->view.getCenter().y;
+    }
     sc->view.setCenter(sc->view.getCenter() + current_zoom * (mouse_prev_pos - mouse_pos));
 }
 
-void InputHandler::Scroll(int scroll)
+void InputHandler::Scroll(i32 scroll)
 {
-    if (scroll > 0 && current_zoom * ZOOM_SPEED > MIN_ZOOM)
+    if (scroll > 0 && current_zoom * ZOOM_SPEED > sc->map->zoom_min)
     {
         sc->view.zoom(ZOOM_SPEED);
         current_zoom *= ZOOM_SPEED;
     }
-    if (scroll < 0 && current_zoom / ZOOM_SPEED < MAX_ZOOM)
+    if (scroll < 0 && current_zoom / ZOOM_SPEED < sc->map->zoom_max)
     {
         sc->view.zoom(1/ZOOM_SPEED);
         current_zoom /= ZOOM_SPEED;

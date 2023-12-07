@@ -15,7 +15,7 @@ class Point;
 class Edge
 {
 public:
-    Edge(Point* ori, Point* dest, const float way_time_, const bool singleSided);
+    Edge(Point* ori, Point* dest, const u32 way_time_, const bool singleSided = false);
 
     Edge(const Edge& e) = delete;
     Edge& operator=(const Edge& e) = delete;
@@ -35,7 +35,7 @@ private:
     sf::RectangleShape line;
     Point* origin;
     Point* destination;
-    float way_time;
+    u32 way_time;
     bool single_sided;
 };
 

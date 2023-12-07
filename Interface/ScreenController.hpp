@@ -4,6 +4,7 @@
 #include<SFML\Graphics.hpp>
 #include"Button.hpp"
 #include"../EdgeAndPoint/Edge_Point.hpp"
+#include"../Map/Map.cpp"
 #include<cstdint>
 #include<vector>
 
@@ -13,7 +14,7 @@ class Screen
 {
 public:
     Screen()
-    : window(sf::RenderWindow{sf::VideoMode(2*SCREEN_CENTER.x, 2*SCREEN_CENTER.y), "Grafi"})
+    : map(nullptr), window(sf::RenderWindow{sf::VideoMode(2*SCREEN_CENTER.x, 2*SCREEN_CENTER.y), "Grafi"})
     {
         font.loadFromFile("arial.ttf");
         point_label.setFont(font);
@@ -34,7 +35,7 @@ public:
 
     void LoadMenu();
 
-    void LoadScene1();
+    void LoadMap1();
 
     void Update();    
 
@@ -54,9 +55,8 @@ private:
     sf::View view{sf::FloatRect(0, 0, 2*SCREEN_CENTER.x, 2*SCREEN_CENTER.y)};
     sf::View default_view = window.getDefaultView();
 
+    Map* map; 
     std::vector<Button<Screen>*> buttons;
-    std::vector<Point*> points;
-    std::vector<Edge*> edges;
 
     sf::Font font;
     sf::Text point_label;

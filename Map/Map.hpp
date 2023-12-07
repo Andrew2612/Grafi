@@ -1,0 +1,88 @@
+#ifndef Grafi__Map_
+#define Grafi__Map_
+
+#include <iostream>
+#include <fstream>
+#include <cstdint>
+#include <vector>
+#include <stdexcept>
+#include"../EdgeAndPoint/Edge_Point.hpp"
+
+using u32 = uint32_t;
+using i64 = int64_t;
+
+struct Map;
+
+class MapReader
+{
+public:
+    MapReader(u32 map_index, Map* map_ptr);
+
+private:
+    std::ifstream map_file;
+
+    Map* map;
+
+    std::vector<Point*> points;
+    std::vector<Edge*> edges;
+
+    void ReadMapInfo();
+
+    u32 BuildMap(u32 j);
+    u32 CreatePoints(u32 j);
+    u32 CreateEdges(u32 j);
+
+    enum struct TokenType {
+        T_LSQUARE, T_RSQUARE, T_LCURLY, T_RCURLY,
+        T_COMMA, T_COLON,
+        T_INTEGER, T_STRING, T_TRUE, T_FALSE,
+        T_EOF
+    };
+
+    struct Token {
+        TokenType type;
+
+        std::string value_str;
+        i64 value_int;
+        bool value_bool;
+    };
+    std::vector<Token> tokens;
+
+    std::string ReadString(std::istream& is);
+    bool is_letter(char c);
+    i64 ReadInteger(std::istream& is);
+    bool ReadComplexChar(char * symbol, std::istream& is);
+    std::string ReadLiteral(std::istream& is);
+    void EatWhitespace(std::istream& is);
+
+    Token MakeIntegerToken(i64 value);
+    Token MakeBoolToken(bool value);
+    Token MakeStringToken(const std::string& value);
+    Token MakeRawToken(TokenType tt);
+
+    Token ReadNextToken(std::istream& is);
+};
+
+struct Map
+{
+    Map(u32 map) {MapReader reader{map, this};}
+
+    ~Map();
+
+    Map(const Map& s) = delete;
+    Map& operator=(const Map& s) = delete;
+    Map(Map&& s) = delete;
+    Map& operator=(Map&& s) = delete;
+    u32 width, height, zoom_max, zoom_min;
+
+
+    std::vector<Point*> points;
+    std::vector<Edge*> edges;
+
+    void CreatePoint(float posX, float posY);
+
+    void CreateEdge(u32 origin, u32 dest, u32 weight);
+};
+
+
+#endif

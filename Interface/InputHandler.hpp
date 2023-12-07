@@ -8,19 +8,22 @@
 #include<time.h>
 
 using u32 = uint32_t;
+using i32 = int32_t;
+
+class Screen;
 
 class InputHandler
 {
 private:
     std::vector<u32> way;
-    int origin_waypoint = -1;
+    i32 origin_waypoint = -1;
 
     Screen* sc;
 
     sf::Event event;
     sf::Vector2f mouse_prev_pos;
     sf::Vector2f mouse_pos;
-    int current_point_index;
+    i32 current_point_index;
 
     sf::Clock clock;
     float dt;
@@ -28,13 +31,11 @@ private:
 
     float current_zoom = 1;
     const float ZOOM_SPEED = 0.95;
-    const float MIN_ZOOM = 0.3;
-    const float MAX_ZOOM = 3;
 
-    int GetPointTargetIndex();
+    i32 GetPointTargetIndex();
     void OnClick();
     void Move();
-    void Scroll(int scroll);
+    void Scroll(i32 scroll);
 public:
     InputHandler(Screen* screen) : sc(screen) {}
 
