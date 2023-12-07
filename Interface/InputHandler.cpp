@@ -102,15 +102,15 @@ void InputHandler::Move()
 {
     sf::Vector2f new_center(sc->view.getCenter() + current_zoom * (mouse_prev_pos - mouse_pos));
     
-    if (new_center.x + sc->SCREEN_CENTER.x > sc->map->width || new_center.x - sc->SCREEN_CENTER.x < 0)
+    if (new_center.x > sc->map->width || new_center.x < 0)
     {
         new_center.x = sc->view.getCenter().x;
     }
-    if (new_center.y + sc->SCREEN_CENTER.y > sc->map->height || new_center.y - sc->SCREEN_CENTER.y < 0)
+    if (new_center.y > sc->map->height || new_center.y < 0)
     {
         new_center.y = sc->view.getCenter().y;
     }
-    sc->view.setCenter(sc->view.getCenter() + current_zoom * (mouse_prev_pos - mouse_pos));
+    sc->view.setCenter(new_center);
 }
 
 void InputHandler::Scroll(i32 scroll)

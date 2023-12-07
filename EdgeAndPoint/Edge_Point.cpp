@@ -8,7 +8,7 @@
 
 using u32 = uint32_t;
 
-std::vector<u32> Point::FindPath(const std::vector<Edge*>& edges, u32 num_of_points, u32 destination_num) const
+std::vector<u32> Point::FindPath(const std::vector<Edge*>& edges, const u32 num_of_points, u32 destination_num) const
 {
     int distance[num_of_points];
     for (u32 i = 0; i < num_of_points; i++)

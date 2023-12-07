@@ -79,9 +79,9 @@ struct Map
     std::vector<Point*> points;
     std::vector<Edge*> edges;
 
-    void CreatePoint(float posX, float posY);
+    void CreatePoint(const float posX, const float posY, const std::string& name);
 
-    void CreateEdge(u32 origin, u32 dest, u32 weight);
+    void CreateEdge(const u32 origin, const u32 dest, const u32 weight);
 };
 
 

@@ -89,6 +89,6 @@ void Screen::SetPointLabel(int index)
         return;
     }
 
-    point_label.setString(std::to_string(index));
+    point_label.setString(map->points[index]->Name());
     point_label.setPosition(sf::Vector2f(0, 15) + map->points[index]->Shape()->getPosition());
 }

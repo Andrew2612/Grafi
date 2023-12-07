@@ -45,13 +45,12 @@ class Point
 private:
     sf::Shape* shape;
 
-    std::string name; //later
-    float delay_time; //later
+    std::string name; 
     int point_number;
 
 public:
-    Point(const int num, sf::Shape* sh)
-        : point_number(num), shape(sh) {}
+    Point(const int num, sf::Shape* sh, const std::string& name_)
+        : point_number(num), shape(sh), name(name_) {}
     ~Point() {delete shape;}
 
     Point(const Point& p) = delete;
@@ -62,7 +61,6 @@ public:
     sf::Shape* Shape() const noexcept {return shape;}
     std::string Name() const noexcept {return name;}
     u32 PointNumber() const noexcept {return point_number;}
-    float DelayTime() const noexcept {return delay_time;}
 
     std::vector<u32> FindPath(const std::vector<Edge*>& edges,
         u32 num_of_points, u32 destination_num) const;

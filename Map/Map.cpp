@@ -16,16 +16,16 @@ Map::~Map()
     edges.clear();
 }
 
-void Map::CreatePoint(float posX, float posY)
+void Map::CreatePoint(const float posX, const float posY, const std::string& name)
 {
     sf::CircleShape* shape = new sf::CircleShape(10);
     shape->setOrigin(sf::Vector2f(10.0f, 10.0f));
     shape->setFillColor(sf::Color(255, 0, 150));
     shape->setPosition(sf::Vector2f(posX, posY));
-    points.push_back(new Point(points.size(), shape));
+    points.push_back(new Point(points.size(), shape, name));
 }
 
-void Map::CreateEdge(u32 origin, u32 dest, u32 weight)
+void Map::CreateEdge(const u32 origin, const u32 dest, const u32 weight)
 {
     edges.push_back(new Edge(points[origin], points[dest], weight));
 }
@@ -117,6 +117,7 @@ u32 MapReader::BuildMap(u32 j)
 u32 MapReader::CreatePoints(u32 j)
 {
     u32 posX, posY;
+    std::string name;
     std::string current_param;
     u32 counter = 0;
 
@@ -124,19 +125,30 @@ u32 MapReader::CreatePoints(u32 j)
     {
         if (tokens[j].type == TokenType::T_STRING)
         {
-            current_param = tokens[j].value_str;
+            std::cerr << "str : " << j << std::endl;
+            if (tokens[j+2].type == TokenType::T_STRING)
+            {
+                counter++;
+                name = tokens[j+2].value_str;
+                std::cerr << "Name : " << name << std::endl;
+                j += 2;
+            }
+            else
+            {
+                current_param = tokens[j].value_str;
+            }
         }
         else if (tokens[j].type == TokenType::T_INTEGER)
         {
             counter++;
             if (current_param == "posX") {posX = tokens[j].value_int;}
             else if (current_param == "posY") {posY = tokens[j].value_int;}
+        }
 
-            if (counter == 2)
-            {
-                map->CreatePoint(static_cast<float>(posX), static_cast<float>(posY));
-                counter = 0;
-            }
+        if (counter == 3)
+        {
+            map->CreatePoint(static_cast<float>(posX), static_cast<float>(posY), name);
+            counter = 0;
         }
         j++;
     }
