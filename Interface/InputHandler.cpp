@@ -100,7 +100,7 @@ void InputHandler::OnClick()
 
 void InputHandler::Move()
 {
-    sf::Vector2f new_center(sc->view.getCenter() + current_zoom * (mouse_prev_pos - mouse_pos));
+    sf::Vector2f new_center(sc->view.getCenter() + (mouse_prev_pos - mouse_pos));
     
     if (new_center.x > sc->map->width || new_center.x < 0)
     {
