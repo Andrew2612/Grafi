@@ -8,6 +8,27 @@
 
 using u32 = uint32_t;
 
+Point::Point(const int num, const float posX, const float posY, 
+        const std::string& name_, const PointType t)
+        : point_number(num), name(name_), type(t)
+{
+    switch (t)
+    {
+    case PointType::Metro:
+        shape = new sf::CircleShape(radius);
+        shape->setOrigin(radius, radius);
+        shape->setFillColor(sf::Color::Green);
+        shape->setPosition(posX, posY);
+        break;
+    
+    case PointType::Street:
+        shape = new sf::RectangleShape({2*radius, 2*radius});
+        shape->setPosition({posX - radius, posY - radius});
+        shape->setOrigin(radius, radius);
+        shape->setFillColor(sf::Color::Magenta);
+    }
+}
+
 std::vector<u32> Point::FindPath(const std::vector<Edge*>& edges, const u32 num_of_points, u32 destination_num) const
 {
     int distance[num_of_points];
@@ -32,7 +53,7 @@ std::vector<u32> Point::FindPath(const std::vector<Edge*>& edges, const u32 num_
                 edge_to_prev[edges[j]->Destination()->PointNumber()] = j;
             }
 
-            if (edges[j]->SingleSided()) {std::cerr << "Baddd\n"; continue;}
+            if (edges[j]->SingleSided()) {continue;}
 
             if (distance[edges[j]->Destination()->PointNumber()] != INT_MAX
                 && distance[edges[j]->Destination()->PointNumber()] + edges[j]->WayTime()
@@ -69,7 +90,7 @@ Edge::Edge(Point* ori, Point* dest, const u32 way_time_, const bool singleSided)
 
     sf::Vector2f way = dest->Shape()->getPosition() - ori->Shape()->getPosition();
     float length = std::sqrt(way.x * way.x + way.y * way.y);
-    line.setSize(sf::Vector2f(length, 2));
+    line.setSize({length, width});
 
     float angle = std::acos(way.x/length);
     if (way.y < 0) {angle = -angle;}
@@ -77,5 +98,33 @@ Edge::Edge(Point* ori, Point* dest, const u32 way_time_, const bool singleSided)
     line.setPosition(ori->Shape()->getPosition());
     line.setRotation(180 * angle/3.141f);
 
-    line.setFillColor(sf::Color(0, 155, 120));
+    line.setFillColor(sf::Color::Black);
 };
+
+void Edge::TurnOn()
+{
+    if (origin->Type() == Point::PointType::Metro)
+    {
+        if (destination->Type() == Point::PointType::Metro)
+        {
+            line.setFillColor(sf::Color::Green);
+        }
+        else
+        {
+            line.setFillColor(sf::Color::Blue);
+        }
+    }
+    if (origin->Type() == Point::PointType::Street)
+    {
+        if (destination->Type() == Point::PointType::Street)
+        {
+            line.setFillColor(sf::Color::Magenta);
+        }
+        else
+        {
+            line.setFillColor(sf::Color::Blue);
+        }
+    }
+}
+
+void Edge::TurnOff() {line.setFillColor(sf::Color::Black);}

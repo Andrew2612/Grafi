@@ -16,13 +16,9 @@ Map::~Map()
     edges.clear();
 }
 
-void Map::CreatePoint(const float posX, const float posY, const std::string& name)
+void Map::CreatePoint(const float posX, const float posY, const std::string& name, Point::PointType t)
 {
-    sf::CircleShape* shape = new sf::CircleShape(10);
-    shape->setOrigin(sf::Vector2f(10.0f, 10.0f));
-    shape->setFillColor(sf::Color(255, 0, 150));
-    shape->setPosition(sf::Vector2f(posX, posY));
-    points.push_back(new Point(points.size(), shape, name));
+    points.push_back(new Point(points.size(), posX, posY, name, t));
 }
 
 void Map::CreateEdge(const u32 origin, const u32 dest, const u32 weight)
@@ -70,9 +66,13 @@ void MapReader::ReadMapInfo()
             {
                 i = BuildMap(i+1);
             }
-            if (tokens[i].value_str == "points")
+            if (tokens[i].value_str == "metro_points")
             {
-                i = CreatePoints(i+1);
+                i = CreatePoints(i+1, Point::PointType::Metro);
+            }
+            if (tokens[i].value_str == "street_points")
+            {
+                i = CreatePoints(i+1, Point::PointType::Street);
             }
             if (tokens[i].value_str == "edges")
             {
@@ -114,7 +114,7 @@ u32 MapReader::BuildMap(u32 j)
     return j + 1;
 }
 
-u32 MapReader::CreatePoints(u32 j)
+u32 MapReader::CreatePoints(u32 j, const Point::PointType t)
 {
     u32 posX, posY;
     std::string name;
@@ -147,7 +147,7 @@ u32 MapReader::CreatePoints(u32 j)
 
         if (counter == 3)
         {
-            map->CreatePoint(static_cast<float>(posX), static_cast<float>(posY), name);
+            map->CreatePoint(static_cast<float>(posX), static_cast<float>(posY), name, t);
             counter = 0;
         }
         j++;

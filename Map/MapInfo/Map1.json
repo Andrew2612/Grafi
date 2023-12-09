@@ -5,21 +5,38 @@
         "zoom_max": 3,
         "zoom_min": 1
     },
-    "points": [
+    "metro_points": [
         {
-            "name": "Point0",
+            "name": "Metro_Point0",
             "posX": 100,
             "posY": 100
         },
         {
-            "name": "Point1",
+            "name": "Metro_Point1",
             "posX": 200,
             "posY": 300
         },
         {
-            "name": "Point2",
+            "name": "Metro_Point2",
             "posX": 500,
             "posY": 300
+        }
+    ],
+    "street_points": [
+        {
+            "name": "Street_Point0",
+            "posX": 50,
+            "posY": 50
+        },
+        {
+            "name": "Street_Point1",
+            "posX": 125,
+            "posY": 200
+        },
+        {
+            "name": "Street_Point2",
+            "posX": 400,
+            "posY": 220
         }
     ],
     "edges": [
@@ -37,6 +54,21 @@
             "origin": 0,
             "dest": 2,
             "weight": 50
+        },
+        {
+            "origin": 0,
+            "dest": 3,
+            "weight": 40
+        },
+        {
+            "origin": 5,
+            "dest": 4,
+            "weight": 120
+        },
+        {
+            "origin": 3,
+            "dest": 4,
+            "weight": 70
         }
     ]
 }

@@ -28,8 +28,8 @@ public:
     bool SingleSided() const {return single_sided;}
     sf::RectangleShape* Shape() {return &line;}
 
-    void TurnOn() {line.setFillColor(sf::Color(255, 0, 0));}
-    void TurnOff() {line.setFillColor(sf::Color(0, 155, 120));}
+    void TurnOn();
+    void TurnOff();
 
 private:
     sf::RectangleShape line;
@@ -37,20 +37,18 @@ private:
     Point* destination;
     u32 way_time;
     bool single_sided;
+
+    const float width = 2;
 };
 
 
 class Point
 {
-private:
-    sf::Shape* shape;
-
-    std::string name; 
-    int point_number;
-
 public:
-    Point(const int num, sf::Shape* sh, const std::string& name_)
-        : point_number(num), shape(sh), name(name_) {}
+    enum PointType {Metro, Street};
+
+    Point(const int num, const float posX,
+        const float posY, const std::string& name_, const PointType t);
     ~Point() {delete shape;}
 
     Point(const Point& p) = delete;
@@ -61,9 +59,18 @@ public:
     sf::Shape* Shape() const noexcept {return shape;}
     std::string Name() const noexcept {return name;}
     u32 PointNumber() const noexcept {return point_number;}
+    PointType Type() const noexcept {return type;}
 
     std::vector<u32> FindPath(const std::vector<Edge*>& edges,
         u32 num_of_points, u32 destination_num) const;
+
+private:
+    sf::Shape* shape;
+    const float radius = 10;
+    
+    PointType type;
+    std::string name; 
+    int point_number;
 };
 
 #endif

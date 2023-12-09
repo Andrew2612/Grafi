@@ -29,7 +29,7 @@ private:
     void ReadMapInfo();
 
     u32 BuildMap(u32 j);
-    u32 CreatePoints(u32 j);
+    u32 CreatePoints(u32 j, Point::PointType t);
     u32 CreateEdges(u32 j);
 
     enum struct TokenType {
@@ -79,7 +79,7 @@ struct Map
     std::vector<Point*> points;
     std::vector<Edge*> edges;
 
-    void CreatePoint(const float posX, const float posY, const std::string& name);
+    void CreatePoint(const float posX, const float posY, const std::string& name, Point::PointType t);
 
     void CreateEdge(const u32 origin, const u32 dest, const u32 weight);
 };

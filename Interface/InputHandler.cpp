@@ -69,6 +69,13 @@ void InputHandler::OnClick()
 {
     if (current_point_index < 0)
     {
+        for (u32 j = 0; j < way.size(); j++)
+        {
+            sc->map->edges[way[j]]->TurnOff();
+        }
+        way.clear();
+        origin_waypoint = -1;
+        
         for (u32 i = 0; i < sc->buttons.size(); i++)
         {
             if (sc->buttons[i]->Shape()->getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
