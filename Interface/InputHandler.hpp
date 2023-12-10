@@ -21,6 +21,7 @@ private:
     Screen* sc;
 
     sf::Event event;
+    sf::Vector2i window_mouse_pos;
     sf::Vector2f mouse_prev_pos;
     sf::Vector2f mouse_pos;
     i32 current_point_index;

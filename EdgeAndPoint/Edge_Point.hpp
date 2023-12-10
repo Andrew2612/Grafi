@@ -38,7 +38,7 @@ private:
     u32 way_time;
     bool single_sided;
 
-    const float width = 2;
+    const float width = 4;
 };
 
 
@@ -66,8 +66,10 @@ public:
 
 private:
     sf::Shape* shape;
-    const float radius = 10;
+    const float radius = 12;
     
+    sf::Texture point_texture;
+
     PointType type;
     std::string name; 
     int point_number;

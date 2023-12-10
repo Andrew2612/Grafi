@@ -13,14 +13,7 @@ using u32 = uint32_t;
 class Screen
 {
 public:
-    Screen()
-    : map(nullptr), window(sf::RenderWindow{sf::VideoMode(2*SCREEN_CENTER.x, 2*SCREEN_CENTER.y), "Grafi"})
-    {
-        font.loadFromFile("arial.ttf");
-        point_label.setFont(font);
-        point_label.setFillColor(sf::Color::Black);
-        LoadMenu();
-    }
+    Screen();
 
     ~Screen() {DeleteObjects();}
 
@@ -33,15 +26,18 @@ public:
 
     void Close();
 
-    void LoadMenu();
-
-    void LoadMap1();
-
     void Update();    
 
 private:
     friend class InputHandler;
-    void CreateButton(sf::Vector2f pos, void (Screen::*f)());
+
+    void LoadMenu();
+
+    void LoadMapInterface();
+
+    void LoadMap1();
+
+    void CreateButton(const sf::Vector2f pos, void (Screen::*f)(), const std::string text);
 
     void CreatePoint(sf::Vector2f pos);
 

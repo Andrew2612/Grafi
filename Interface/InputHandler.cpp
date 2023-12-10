@@ -5,7 +5,9 @@
 
 void InputHandler::GetInput()
 {
-    mouse_pos = sc->view.getCenter() - current_zoom *(sc->SCREEN_CENTER - static_cast<sf::Vector2f>(sf::Mouse::getPosition(sc->window)));
+    window_mouse_pos = sf::Mouse::getPosition(sc->window);
+    mouse_pos = sc->view.getCenter() - current_zoom *(sc->SCREEN_CENTER 
+        - static_cast<sf::Vector2f>(window_mouse_pos));
     if (sc->map) {current_point_index = GetPointTargetIndex();}
     else {current_point_index = -1;}
 
@@ -28,6 +30,7 @@ void InputHandler::GetInput()
         if (event.type == sf::Event::MouseButtonReleased
             && event.mouseButton.button == sf::Mouse::Left)
         {
+            std::cerr << mouse_pos.x << ", " << mouse_pos.y << '\n';
             dt = clock.getElapsedTime().asSeconds();
             if (dt < CLICK_TIME)
             {
@@ -78,7 +81,7 @@ void InputHandler::OnClick()
         
         for (u32 i = 0; i < sc->buttons.size(); i++)
         {
-            if (sc->buttons[i]->Shape()->getGlobalBounds().contains(mouse_pos.x, mouse_pos.y))
+            if (sc->buttons[i]->Shape()->getGlobalBounds().contains(window_mouse_pos.x, window_mouse_pos.y))
             {
                 sc->buttons[i]->OnClick();
                 return;

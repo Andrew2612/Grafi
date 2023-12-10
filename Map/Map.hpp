@@ -1,6 +1,7 @@
 #ifndef Grafi__Map_
 #define Grafi__Map_
 
+#include<SFML\Graphics.hpp>
 #include <iostream>
 #include <fstream>
 #include <cstdint>
@@ -75,7 +76,8 @@ struct Map
     Map& operator=(Map&& s) = delete;
     u32 width, height, zoom_max, zoom_min;
 
-
+    sf::Texture map_texture;
+    sf::Sprite map_sprite;
     std::vector<Point*> points;
     std::vector<Edge*> edges;
 

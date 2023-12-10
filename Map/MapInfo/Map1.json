@@ -1,7 +1,7 @@
 {
     "map": {
-        "width": 1000,
-        "height": 1000,
+        "width": 1600,
+        "height": 1600,
         "zoom_max": 3,
         "zoom_min": 1
     },

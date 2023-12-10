@@ -9,9 +9,19 @@
 
 using u32 = uint32_t;
 
+Screen::Screen()
+: map(nullptr), window(sf::RenderWindow{sf::VideoMode(2*SCREEN_CENTER.x, 2*SCREEN_CENTER.y), "Grafi"})
+{
+    font.loadFromFile("arial.ttf");
+    point_label.setFont(font);
+    point_label.setFillColor(sf::Color::Yellow);
+    point_label.setCharacterSize(40);
+    LoadMenu();
+}
+
 void Screen::DeleteObjects()
 {
-    if (map) {delete map;}
+    if (map) {delete map; map = nullptr;}
     for (u32 i = 0; i < buttons.size(); i++)
     {
         delete buttons[i];
@@ -28,24 +38,32 @@ void Screen::Close()
 void Screen::LoadMenu()
 {
     DeleteObjects();
-    CreateButton(sf::Vector2f(SCREEN_CENTER.x, SCREEN_CENTER.y - 60), &Close);
-    CreateButton(sf::Vector2f(SCREEN_CENTER.x, SCREEN_CENTER.y + 60), &LoadMap1);
+    CreateButton({SCREEN_CENTER.x, SCREEN_CENTER.y - 60}, &Close, "Exit");
+    CreateButton({SCREEN_CENTER.x, SCREEN_CENTER.y + 60}, &LoadMap1, "First Map");
 }
+
+
+void Screen::LoadMapInterface()
+{
+    CreateButton({70, 50}, &LoadMenu, "Menu");
+    CreateButton({2*SCREEN_CENTER.x - 70, 50}, &Close, "Exit");
+}
+
 
 void Screen::LoadMap1()
 {
     DeleteObjects();
-
+    LoadMapInterface();
     map = new Map(1);
 }
 
 void Screen::Update()
 {
-    window.clear(sf::Color::White);
-
     if (map)
     {
+        window.clear(sf::Color::Black);
         window.setView(view);
+        window.draw(map->map_sprite);
         for (u32 i = 0; i < map->points.size(); i++)
         {
             window.draw(*map->points[i]->Shape());
@@ -58,25 +76,26 @@ void Screen::Update()
         {
             window.draw(point_label);
         }
-    }
+    } else {window.clear(sf::Color::White);}
 
     window.setView(default_view);
     for (u32 i = 0; i < buttons.size(); i++)
     {
         window.draw(*buttons[i]->Shape());
+        window.draw(buttons[i]->Text());
     }
 
     window.display();
 }
 
-void Screen::CreateButton(sf::Vector2f pos, void (Screen::*f)())
+void Screen::CreateButton(const sf::Vector2f pos, void (Screen::*f)(), const std::string text)
 {
-    sf::RectangleShape* shape = new sf::RectangleShape(sf::Vector2f(100, 100));
-    shape->setFillColor(sf::Color(255, 255, 0));
-    shape->setOrigin(sf::Vector2f(50, 50));
+    sf::RectangleShape* shape = new sf::RectangleShape({120, 60});
+    shape->setFillColor(sf::Color::Blue);
+    shape->setOrigin(sf::Vector2f(60, 30));
     shape->setPosition(pos);
 
-    buttons.push_back(new Button(shape, this, f));
+    buttons.push_back(new Button(shape, this, f, text, font));
 }
 
 void Screen::SetPointLabel(int index)
@@ -90,5 +109,5 @@ void Screen::SetPointLabel(int index)
     }
 
     point_label.setString(map->points[index]->Name());
-    point_label.setPosition(sf::Vector2f(0, 15) + map->points[index]->Shape()->getPosition());
+    point_label.setPosition(sf::Vector2f(-40, 15) + map->points[index]->Shape()->getPosition());
 }

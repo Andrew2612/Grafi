@@ -17,15 +17,17 @@ Point::Point(const int num, const float posX, const float posY,
     case PointType::Metro:
         shape = new sf::CircleShape(radius);
         shape->setOrigin(radius, radius);
-        shape->setFillColor(sf::Color::Green);
         shape->setPosition(posX, posY);
+        point_texture.loadFromFile("../EdgeAndPoint/Metro.jpg");
+        shape->setTexture(&point_texture);
         break;
     
     case PointType::Street:
         shape = new sf::RectangleShape({2*radius, 2*radius});
-        shape->setPosition({posX - radius, posY - radius});
         shape->setOrigin(radius, radius);
-        shape->setFillColor(sf::Color::Magenta);
+        shape->setPosition({posX - radius, posY - radius});
+        point_texture.loadFromFile("../EdgeAndPoint/Street.png");
+        shape->setTexture(&point_texture);
     }
 }
 
@@ -107,22 +109,22 @@ void Edge::TurnOn()
     {
         if (destination->Type() == Point::PointType::Metro)
         {
-            line.setFillColor(sf::Color::Green);
+            line.setFillColor(sf::Color::Red);
         }
         else
         {
-            line.setFillColor(sf::Color::Blue);
+            line.setFillColor(sf::Color::Magenta);
         }
     }
     if (origin->Type() == Point::PointType::Street)
     {
         if (destination->Type() == Point::PointType::Street)
         {
-            line.setFillColor(sf::Color::Magenta);
+            line.setFillColor(sf::Color::Blue);
         }
         else
         {
-            line.setFillColor(sf::Color::Blue);
+            line.setFillColor(sf::Color::Magenta);
         }
     }
 }

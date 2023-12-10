@@ -11,9 +11,15 @@ private:
     T* owner;
     std::function<void(T*)> func_ptr;
     sf::Shape* shape;
+    sf::Text text;
 public:
-    Button(sf::Shape* shape_, T* o, void (T::*func)())
-    : shape(shape_), owner(o), func_ptr(func) {}
+    Button(sf::Shape* shape_, T* o, void (T::*func)(), const std::string& t, sf::Font& font)
+    : shape(shape_), owner(o), func_ptr(func), text({t, font})
+    {
+        text.setOrigin(shape->getOrigin());
+        text.setPosition(shape->getPosition());
+        text.setCharacterSize((shape->getLocalBounds().width) / text.getString().getSize());
+    }
 
     ~Button() {delete shape;}
 
@@ -22,10 +28,12 @@ public:
     Button(Button&& b) = delete;
     Button& operator=(Button&& b) = delete;
 
-    sf::Shape* Shape() const
+    const sf::Shape* Shape() const
     {
         return shape;
     }
+
+    const sf::Text& Text() const {return text;}
 
     void OnClick()
     {

@@ -42,6 +42,10 @@ MapReader::MapReader(u32 map_index, Map* map_ptr) : map(map_ptr)
     {
         case 1:
             map_file.open("../Map/MapInfo/Map1.json");
+            map->map_texture.loadFromFile("../Map/MapInfo/Map1.jpg");
+            map->map_sprite.setTexture(map->map_texture);
+            //map->map_sprite.setOrigin(map->map_sprite.getLocalBounds().width/2, map->map_sprite.getLocalBounds().height/2);
+            map->map_sprite.setPosition(0,0);
             break;
         default:
           Assert(false, "Wrong Map");
