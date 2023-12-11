@@ -2,24 +2,202 @@
     "map": {
         "width": 1600,
         "height": 1600,
-        "zoom_max": 3,
-        "zoom_min": 1
+        "zoom_max": 2,
+        "zoom_min": 1,
+        "scale": 320
     },
     "metro_points": [
         {
-            "name": "Metro_Point0",
-            "posX": 100,
-            "posY": 100
+            "num": 0,
+            "name": "Ohotniy Ryad",
+            "posX": 705,
+            "posY": 590
         },
         {
-            "name": "Metro_Point1",
-            "posX": 200,
-            "posY": 300
+            "num": 1,
+            "name": "Alecsandrovsi Sad",
+            "posX": 564,
+            "posY": 779
         },
         {
-            "name": "Metro_Point2",
-            "posX": 500,
-            "posY": 300
+            "num": 2,
+            "name": "Borovitskaya",
+            "posX": 545,
+            "posY": 838
+        },
+        {
+            "num": 3,
+            "name": "Biblioteka im. Lenina",
+            "posX": 593,
+            "posY": 818
+        },
+        {
+            "num": 4,
+            "name": "Kropotkinskaya",
+            "posX": 478,
+            "posY": 991
+        },
+        {
+            "num": 5,
+            "name": "Arbatskaya",
+            "posX": 449,
+            "posY": 788
+        },
+        {
+            "num": 6,
+            "name": "Teatralnaya",
+            "posX": 768,
+            "posY": 610
+        },
+        {
+            "num": 7,
+            "name": "Pl. Revolucii",
+            "posX": 866,
+            "posY": 691
+        },
+        {
+            "num": 8,
+            "name": "Lubyanka",
+            "posX": 938,
+            "posY": 557
+        },
+        {
+            "num": 9,
+            "name": "Kuznecki Most",
+            "posX": 888,
+            "posY": 484
+        },
+        {
+            "num": 10,
+            "name": "Kitai-Gorod",
+            "posX": 1034,
+            "posY": 670
+        },
+        {
+            "num": 11,
+            "name": "Chistie Prudi",
+            "posX": 1160,
+            "posY": 342
+        },
+        {
+            "num": 12,
+            "name": "Sretenski Bulvar",
+            "posX": 1143,
+            "posY": 309
+        },
+        {
+            "num": 13,
+            "name": "Suharevskaya",
+            "posX": 1014,
+            "posY": 111
+        },
+        {
+            "num": 14,
+            "name": "Krasnie Vorota",
+            "posX": 1328,
+            "posY": 247
+        },
+        {
+            "num": 15,
+            "name": "Kurskaya",
+            "posX": 1511,
+            "posY": 581
+        },
+        {
+            "num": 16,
+            "name": "Chkalovskaya",
+            "posX": 1478,
+            "posY": 641
+        },
+        {
+            "num": 17,
+            "name": "Taganskaya",
+            "posX": 1380,
+            "posY": 1119
+        },
+        {
+            "num": 18,
+            "name": "Marksistskaya",
+            "posX": 1422,
+            "posY": 1142
+        },
+        {
+            "num": 19,
+            "name": "Paveletskaya",
+            "posX": 1130,
+            "posY": 1496
+        },
+        {
+            "num": 20,
+            "name": "Dobrininskaya",
+            "posX": 878,
+            "posY": 1539
+        },
+        {
+            "num": 21,
+            "name": "Novokuznetskaya",
+            "posX": 957,
+            "posY": 1158
+        },
+        {
+            "num": 22,
+            "name": "Tretyakovskaya",
+            "posX": 907,
+            "posY": 1160
+        },
+        {
+            "num": 23,
+            "name": "Polyanka",
+            "posX": 765,
+            "posY": 1279
+        },
+        {
+            "num": 24,
+            "name": "Oktyabrskaya",
+            "posX": 609,
+            "posY": 1257
+        },
+        {
+            "num": 25,
+            "name": "Park Kulturi",
+            "posX": 272,
+            "posY": 1345
+        },
+        {
+            "num": 26,
+            "name": "Smolenskaya",
+            "posX": 118,
+            "posY": 924
+        },
+        {
+            "num": 27,
+            "name": "Mayakovskaya",
+            "posX": 323,
+            "posY": 189
+        },
+        {
+            "num": 28,
+            "name": "Tverskaya",
+            "posX": 532,
+            "posY": 342
+        },
+        {
+            "num": 29,
+            "name": "Chehovskaya",
+            "posX": 577,
+            "posY": 360
+        },
+        {
+            "num": 30,
+            "name": "Trubnaya",
+            "posX": 797,
+            "posY": 231
+        },
+        {
+            "num": 31,
+            "name": "Tsvetnoi Bulvar",
+            "posX": 756,
+            "posY": 160
         }
     ],
     "street_points": [
@@ -40,35 +218,72 @@
         }
     ],
     "edges": [
-        {
-            "origin": 0,
-            "dest": 1,
-            "weight": 10
-        },
-        {
-            "origin": 1,
-            "dest": 2,
-            "weight": 100
-        },
-        {
-            "origin": 0,
-            "dest": 2,
-            "weight": 50
-        },
-        {
-            "origin": 0,
-            "dest": 3,
-            "weight": 40
-        },
-        {
-            "origin": 5,
-            "dest": 4,
-            "weight": 120
-        },
-        {
-            "origin": 3,
-            "dest": 4,
-            "weight": 70
-        }
+        25,
+        4,
+        3,
+        1,
+        8,
+        11,
+        10,
+        9,
+        28,
+        6,
+        21,
+        19,
+        17,
+        10,
+        22,
+        24,
+        20,
+        23,
+        2,
+        29,
+        31
+    ],
+    "edges": [
+        1,
+        5,
+        26
+    ],
+    "edges": [
+        1,
+        7,
+        15,
+        17
+    ],
+    "edges": [
+        19,
+        20
+    ],
+    "edges": [
+        24,
+        25
+    ],
+    "edges": [
+        13,
+        12,
+        30
+    ],
+    "edges": [
+        12,
+        16
+    ],
+    "edges": [
+        27,
+        28
+    ],
+    "edges": [
+        11,
+        14
+    ],
+    "edges": [
+        18,
+        22
+    ],
+    "edges": [
+        1,
+        2,
+        3,
+        1
     ]
 }

@@ -44,7 +44,6 @@ MapReader::MapReader(u32 map_index, Map* map_ptr) : map(map_ptr)
             map_file.open("../Map/MapInfo/Map1.json");
             map->map_texture.loadFromFile("../Map/MapInfo/Map1.jpg");
             map->map_sprite.setTexture(map->map_texture);
-            //map->map_sprite.setOrigin(map->map_sprite.getLocalBounds().width/2, map->map_sprite.getLocalBounds().height/2);
             map->map_sprite.setPosition(0,0);
             break;
         default:
@@ -91,7 +90,7 @@ void MapReader::ReadMapInfo()
 
 u32 MapReader::BuildMap(u32 j)
 {
-    u32 wigth, height, zoom_max, zoom_min;
+    u32 wigth, height, zoom_max, zoom_min, scale;
     std::string current_param;
 
     while (tokens[j].type != TokenType::T_RCURLY)
@@ -106,6 +105,7 @@ u32 MapReader::BuildMap(u32 j)
             else if (current_param == "height") {height = tokens[j].value_int;}
             else if (current_param == "zoom_max") {zoom_max = tokens[j].value_int;}
             else if (current_param == "zoom_min") {zoom_min = tokens[j].value_int;}
+            else if (current_param == "scale") {scale = tokens[j].value_int;}
         }
         j++;
     }
@@ -114,6 +114,7 @@ u32 MapReader::BuildMap(u32 j)
     map->height = height;
     map->zoom_max = zoom_max;
     map->zoom_min = zoom_min;
+    map->scale = scale;
 
     return j + 1;
 }
@@ -129,12 +130,10 @@ u32 MapReader::CreatePoints(u32 j, const Point::PointType t)
     {
         if (tokens[j].type == TokenType::T_STRING)
         {
-            std::cerr << "str : " << j << std::endl;
             if (tokens[j+2].type == TokenType::T_STRING)
             {
                 counter++;
                 name = tokens[j+2].value_str;
-                std::cerr << "Name : " << name << std::endl;
                 j += 2;
             }
             else
@@ -144,9 +143,8 @@ u32 MapReader::CreatePoints(u32 j, const Point::PointType t)
         }
         else if (tokens[j].type == TokenType::T_INTEGER)
         {
-            counter++;
-            if (current_param == "posX") {posX = tokens[j].value_int;}
-            else if (current_param == "posY") {posY = tokens[j].value_int;}
+            if (current_param == "posX") {posX = tokens[j].value_int; counter++;}
+            else if (current_param == "posY") {posY = tokens[j].value_int; counter++;}
         }
 
         if (counter == 3)
@@ -161,28 +159,16 @@ u32 MapReader::CreatePoints(u32 j, const Point::PointType t)
 
 u32 MapReader::CreateEdges(u32 j)
 {
-    u32 origin, dest, weight;
+    u32 origin, dest;
     std::string current_param;
     u32 counter = 0;
 
     while (tokens[j].type != TokenType::T_RSQUARE)
     {
-        if (tokens[j].type == TokenType::T_STRING)
+        if (tokens[j].type == TokenType::T_INTEGER && tokens[j+2].type == TokenType::T_INTEGER)
         {
-            current_param = tokens[j].value_str;
-        }
-        else if (tokens[j].type == TokenType::T_INTEGER)
-        {
-            counter++;
-            if (current_param == "origin") {origin = tokens[j].value_int;}
-            else if (current_param == "dest") {dest = tokens[j].value_int;}
-            else if (current_param == "weight") {weight = tokens[j].value_int;}
-
-            if (counter == 3)
-            {
-                map->CreateEdge(origin, dest, weight);
-                counter = 0;
-            }
+            map->CreateEdge(tokens[j].value_int, tokens[j+2].value_int, map->scale);
+            j++;
         }
         j++;
     }
@@ -198,17 +184,17 @@ i64 MapReader::ReadInteger(std::istream& is) {
     if ((c == '-') || (c == '+')) {
         negative = (c == '-');
         is.get();
-      EatWhitespace(is);
-      c = is.peek();
+        EatWhitespace(is);
+        c = is.peek();
     }
 
     ASSERT(isdigit(c));
     
     do {
-      val *= 10;
-      val += (c - '0');
-      is.get();
-      c = is.peek();
+        val *= 10;
+        val += (c - '0');
+        is.get();
+        c = is.peek();
     } while (isdigit(c));
 
     if (negative) val = -val;
@@ -275,8 +261,6 @@ std::string MapReader::ReadString(std::istream& is){
     while(flag || c!='"'){
       smth += c;
       flag = ReadComplexChar(&c, is);
-      std::cout << "processing: c = " << c << " flag = " << flag << "\n"; 
-      
     }
     return smth;
 }

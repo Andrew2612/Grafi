@@ -56,6 +56,7 @@ private:
 
     sf::Font font;
     sf::Text point_label;
+    sf::Text way_time_label;
 };
 
 #endif

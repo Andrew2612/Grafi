@@ -27,7 +27,6 @@ private:
     i32 current_point_index;
 
     sf::Clock clock;
-    float dt;
     const float CLICK_TIME = 0.3f;
 
     float current_zoom = 1;

@@ -15,7 +15,7 @@ class Point;
 class Edge
 {
 public:
-    Edge(Point* ori, Point* dest, const u32 way_time_, const bool singleSided = false);
+    Edge(Point* ori, Point* dest, const u32 scale, const bool singleSided = false);
 
     Edge(const Edge& e) = delete;
     Edge& operator=(const Edge& e) = delete;
@@ -35,10 +35,14 @@ private:
     sf::RectangleShape line;
     Point* origin;
     Point* destination;
-    u32 way_time;
+
+    const u32 METRO_SPEED = 40;
+    const u32 CAR_SPEED = 16;
+    const u32 WALK_SPEED = 4;
+    float way_time;
     bool single_sided;
 
-    const float width = 4;
+    const float width = 3;
 };
 
 

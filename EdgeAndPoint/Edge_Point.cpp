@@ -2,7 +2,6 @@
 #include<SFML\Graphics.hpp>
 #include<string>
 #include<cmath>
-#include<iostream>
 #include<vector>
 #include<cstdint>
 
@@ -33,7 +32,7 @@ Point::Point(const int num, const float posX, const float posY,
 
 std::vector<u32> Point::FindPath(const std::vector<Edge*>& edges, const u32 num_of_points, u32 destination_num) const
 {
-    int distance[num_of_points];
+    float distance[num_of_points];
     for (u32 i = 0; i < num_of_points; i++)
     {
         distance[i] = INT_MAX;
@@ -68,31 +67,49 @@ std::vector<u32> Point::FindPath(const std::vector<Edge*>& edges, const u32 num_
         }
     }
 
-    std::cerr << "Distance from Origin: "<< distance[destination_num] << '\n';
+    u32 tmp = destination_num;
     std::vector<u32> way;
-    while (destination_num != point_number)
+    while (tmp != point_number)
     {
-        edges[edge_to_prev[destination_num]]->TurnOn();
-        way.push_back(edge_to_prev[destination_num]);
+        edges[edge_to_prev[tmp]]->TurnOn();
+        way.push_back(edge_to_prev[tmp]);
 
-        int d = edges[edge_to_prev[destination_num]]->Origin()->PointNumber();
-        if (destination_num == d)
+        int d = edges[edge_to_prev[tmp]]->Origin()->PointNumber();
+        if (tmp == d)
         {
-            destination_num = edges[edge_to_prev[destination_num]]->Destination()->PointNumber();
+            tmp = edges[edge_to_prev[tmp]]->Destination()->PointNumber();
         }
-        else {destination_num = d;}
+        else {tmp = d;}
     }
+    way.push_back(distance[destination_num]);
     return way;
 }
 
-Edge::Edge(Point* ori, Point* dest, const u32 way_time_, const bool singleSided)
-    : destination(dest), origin(ori), way_time(way_time_), single_sided(singleSided)
+Edge::Edge(Point* ori, Point* dest, const u32 scale, const bool singleSided)
+    : destination(dest), origin(ori), single_sided(singleSided)
 {
     line = sf::RectangleShape(ori->Shape()->getPosition());
 
     sf::Vector2f way = dest->Shape()->getPosition() - ori->Shape()->getPosition();
     float length = std::sqrt(way.x * way.x + way.y * way.y);
     line.setSize({length, width});
+
+    if (origin->Type() == destination->Type())
+    {
+        if (origin->Type() == Point::PointType::Metro)
+        {
+            way_time = 60*length / (scale * METRO_SPEED);
+        }
+        else
+        {
+            way_time = 60*length / (scale * CAR_SPEED);
+        }
+    }
+    else
+    {
+        way_time = 60*length / (scale * WALK_SPEED);
+    }
+
 
     float angle = std::acos(way.x/length);
     if (way.y < 0) {angle = -angle;}
@@ -105,27 +122,20 @@ Edge::Edge(Point* ori, Point* dest, const u32 way_time_, const bool singleSided)
 
 void Edge::TurnOn()
 {
-    if (origin->Type() == Point::PointType::Metro)
+    if (origin->Type() == destination->Type())
     {
-        if (destination->Type() == Point::PointType::Metro)
+        if (origin->Type() == Point::PointType::Metro)
         {
             line.setFillColor(sf::Color::Red);
         }
         else
         {
-            line.setFillColor(sf::Color::Magenta);
-        }
-    }
-    if (origin->Type() == Point::PointType::Street)
-    {
-        if (destination->Type() == Point::PointType::Street)
-        {
             line.setFillColor(sf::Color::Blue);
         }
-        else
-        {
-            line.setFillColor(sf::Color::Magenta);
-        }
+    }
+    else
+    {
+        line.setFillColor(sf::Color::Magenta);
     }
 }
 

@@ -5,7 +5,6 @@
 #include<cstdint>
 #include<vector>
 #include<string>
-#include<iostream>
 
 using u32 = uint32_t;
 
@@ -14,8 +13,13 @@ Screen::Screen()
 {
     font.loadFromFile("arial.ttf");
     point_label.setFont(font);
-    point_label.setFillColor(sf::Color::Yellow);
     point_label.setCharacterSize(40);
+
+    way_time_label.setFont(font);
+    way_time_label.setFillColor(sf::Color::Yellow);
+    way_time_label.setCharacterSize(30);
+    way_time_label.setPosition({0, 2*SCREEN_CENTER.y - 45});
+
     LoadMenu();
 }
 
@@ -64,13 +68,13 @@ void Screen::Update()
         window.clear(sf::Color::Black);
         window.setView(view);
         window.draw(map->map_sprite);
-        for (u32 i = 0; i < map->points.size(); i++)
-        {
-            window.draw(*map->points[i]->Shape());
-        }
         for (u32 i = 0; i < map->edges.size(); i++)
         {
             window.draw(*map->edges[i]->Shape());
+        }
+        for (u32 i = 0; i < map->points.size(); i++)
+        {
+            window.draw(*map->points[i]->Shape());
         }
         if (!point_label.getString().isEmpty())
         {
@@ -84,6 +88,7 @@ void Screen::Update()
         window.draw(*buttons[i]->Shape());
         window.draw(buttons[i]->Text());
     }
+    if (!way_time_label.getString().isEmpty()) {window.draw(way_time_label);}
 
     window.display();
 }
@@ -109,5 +114,13 @@ void Screen::SetPointLabel(int index)
     }
 
     point_label.setString(map->points[index]->Name());
+    if (map->points[index]->Type() == Point::PointType::Metro)
+    {
+        point_label.setFillColor(sf::Color::Yellow);
+    }
+    else if (map->points[index]->Type() == Point::PointType::Street)
+    {
+        point_label.setFillColor({30, 144, 255});
+    }
     point_label.setPosition(sf::Vector2f(-40, 15) + map->points[index]->Shape()->getPosition());
 }

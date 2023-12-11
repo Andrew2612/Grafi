@@ -74,7 +74,7 @@ struct Map
     Map& operator=(const Map& s) = delete;
     Map(Map&& s) = delete;
     Map& operator=(Map&& s) = delete;
-    u32 width, height, zoom_max, zoom_min;
+    u32 width, height, zoom_max, zoom_min, scale;
 
     sf::Texture map_texture;
     sf::Sprite map_sprite;
