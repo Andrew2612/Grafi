@@ -154,8 +154,8 @@
         {
             "num": 24,
             "name": "Oktyabrskaya",
-            "posX": 609,
-            "posY": 1257
+            "posX": 660,
+            "posY": 1482
         },
         {
             "num": 25,
@@ -202,26 +202,137 @@
     ],
     "street_points": [
         {
-            "name": "Street_Point0",
-            "posX": 50,
-            "posY": 50
-        },
-        {
-            "name": "Street_Point1",
-            "posX": 125,
-            "posY": 200
-        },
-        {
-            "name": "Street_Point2",
-            "posX": 400,
+            "num": 32,
+            "name": "Triumfalnaya Pl",
+            "posX": 330,
             "posY": 220
+        },
+        {
+            "num": 33,
+            "name": "Novinski bulvar",
+            "posX": 144,
+            "posY": 543
+        },
+        {
+            "num": 34,
+            "name": "Smolenskaya Pl",
+            "posX": 87,
+            "posY": 982
+        },
+        {
+            "num": 35,
+            "name": "Prechistenka",
+            "posX": 172,
+            "posY": 1216
+        },
+        {
+            "num": 36,
+            "name": "Park Kulturi",
+            "posX": 316,
+            "posY": 1348
+        },
+        {
+            "num": 37,
+            "name": "Oktyabrskaya",
+            "posX": 622,
+            "posY": 1509
+        },
+        {
+            "num": 38,
+            "name": "Dobrininskaya",
+            "posX": 905,
+            "posY": 1514
+        },
+        {
+            "num": 39,
+            "name": "Paveletski Vokzal",
+            "posX": 1097,
+            "posY": 1468
+        },
+        {
+            "num": 40,
+            "name": "Taganskaya",
+            "posX": 1403,
+            "posY": 1192
+        },
+        {
+            "num": 41,
+            "name": "Kurski Vokzal",
+            "posX": 1510,
+            "posY": 624
+        },
+        {
+            "num": 42,
+            "name": "Zemlyanoi Val",
+            "posX": 1479,
+            "posY": 384
+        },
+        {
+            "num": 43,
+            "name": "Krasnie Vorota",
+            "posX": 1363,
+            "posY": 236
+        },
+        {
+            "num": 44,
+            "name": "Suharevskaya",
+            "posX": 1052,
+            "posY": 111
+        },
+        {
+            "num": 45,
+            "name": "Kropotkinskaya",
+            "posX": 434,
+            "posY": 1016
+        },
+        {
+            "num": 46,
+            "name": "Arbatskie Vorota",
+            "posX": 426,
+            "posY": 769
+        },
+        {
+            "num": 47,
+            "name": "Tverskaya",
+            "posX": 520,
+            "posY": 378
+        },
+        {
+            "num": 48,
+            "name": "Trubnaya",
+            "posX": 852,
+            "posY": 281
+        },
+        {
+            "num": 49,
+            "name": "Chistie Prudi",
+            "posX": 1105,
+            "posY": 346
+        },
+        {
+            "num": 50,
+            "name": "Lubyanka",
+            "posX": 926,
+            "posY": 575
+        },
+        {
+            "num": 51,
+            "name": "Ohotniy Ryad",
+            "posX": 735,
+            "posY": 586
+        },
+        {
+            "num": 52,
+            "name": "Biblioteka im. Lenina",
+            "posX": 602,
+            "posY": 857
         }
     ],
     "edges": [
         25,
         4,
         3,
-        1,
+        0,
         8,
         11,
         10,
@@ -243,38 +354,51 @@
     "edges": [
         1,
         5,
-        26
+        26,
+        34
     ],
     "edges": [
         1,
         7,
         15,
-        17
+        17,
+        40
     ],
     "edges": [
+        39,
         19,
-        20
+        20,
+        38
     ],
     "edges": [
+        37,
         24,
-        25
+        25,
+        36
     ],
     "edges": [
+        44,
         13,
         12,
         30
     ],
     "edges": [
         12,
-        16
+        16,
+        41,
+        15
     ],
     "edges": [
+        32,
         27,
         28
     ],
     "edges": [
+        12,
+        49,
         11,
-        14
+        14,
+        43
     ],
     "edges": [
         18,
@@ -283,7 +407,43 @@
     "edges": [
         1,
         2,
+        52,
         3,
+        52,
         1
+    ],
+    "edges": [
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        32
+    ],
+    "edges": [
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52
+    ],
+    "edges": [
+        0,
+        51
+    ],
+    "edges": [
+        8,
+        50
     ]
 }

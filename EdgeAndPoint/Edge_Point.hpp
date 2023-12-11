@@ -37,8 +37,8 @@ private:
     Point* destination;
 
     const u32 METRO_SPEED = 40;
-    const u32 CAR_SPEED = 16;
-    const u32 WALK_SPEED = 4;
+    const u32 CAR_SPEED = 15;
+    const u32 WALK_SPEED = 3;
     float way_time;
     bool single_sided;
 
