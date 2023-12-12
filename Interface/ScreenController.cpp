@@ -1,7 +1,7 @@
 #include"ScreenController.hpp"
 #include<SFML\Graphics.hpp>
 #include"Button.hpp"
-#include"../EdgeAndPoint/Edge_Point.cpp"
+#include"../EdgeAndPoint/Edge_Point.hpp"
 #include<cstdint>
 #include<vector>
 #include<string>
@@ -11,7 +11,7 @@ using u32 = uint32_t;
 Screen::Screen()
 : map(nullptr), window(sf::RenderWindow{sf::VideoMode(2*SCREEN_CENTER.x, 2*SCREEN_CENTER.y), "Grafi"})
 {
-    font.loadFromFile("arial.ttf");
+    font.loadFromFile("../main/arial.ttf");
     point_label.setFont(font);
     point_label.setCharacterSize(40);
 

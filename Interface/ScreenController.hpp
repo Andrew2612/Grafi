@@ -4,7 +4,7 @@
 #include<SFML\Graphics.hpp>
 #include"Button.hpp"
 #include"../EdgeAndPoint/Edge_Point.hpp"
-#include"../Map/Map.cpp"
+#include"../Map/Map.hpp"
 #include<cstdint>
 #include<vector>
 

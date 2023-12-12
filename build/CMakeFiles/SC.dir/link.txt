@@ -1,0 +1,2 @@
+C:\msys64\mingw64\bin\ar.exe qc libSC.a CMakeFiles/SC.dir/C_/Grafi/Interface/ScreenController.cpp.obj
+C:\msys64\mingw64\bin\ranlib.exe libSC.a

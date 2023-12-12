@@ -1,0 +1,32 @@
+[
+{
+  "directory": "C:/Grafi/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DSFML_STATIC @CMakeFiles/EP.dir/includes_CXX.rsp -g -o CMakeFiles\\EP.dir\\C_\\Grafi\\EdgeAndPoint\\Edge_Point.cpp.obj -c C:\\Grafi\\EdgeAndPoint\\Edge_Point.cpp",
+  "file": "C:/Grafi/EdgeAndPoint/Edge_Point.cpp",
+  "output": "CMakeFiles/EP.dir/C_/Grafi/EdgeAndPoint/Edge_Point.cpp.obj"
+},
+{
+  "directory": "C:/Grafi/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DSFML_STATIC @CMakeFiles/M.dir/includes_CXX.rsp -g -o CMakeFiles\\M.dir\\C_\\Grafi\\Map\\Map.cpp.obj -c C:\\Grafi\\Map\\Map.cpp",
+  "file": "C:/Grafi/Map/Map.cpp",
+  "output": "CMakeFiles/M.dir/C_/Grafi/Map/Map.cpp.obj"
+},
+{
+  "directory": "C:/Grafi/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DSFML_STATIC @CMakeFiles/IH.dir/includes_CXX.rsp -g -o CMakeFiles\\IH.dir\\C_\\Grafi\\Interface\\InputHandler.cpp.obj -c C:\\Grafi\\Interface\\InputHandler.cpp",
+  "file": "C:/Grafi/Interface/InputHandler.cpp",
+  "output": "CMakeFiles/IH.dir/C_/Grafi/Interface/InputHandler.cpp.obj"
+},
+{
+  "directory": "C:/Grafi/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DSFML_STATIC @CMakeFiles/SC.dir/includes_CXX.rsp -g -o CMakeFiles\\SC.dir\\C_\\Grafi\\Interface\\ScreenController.cpp.obj -c C:\\Grafi\\Interface\\ScreenController.cpp",
+  "file": "C:/Grafi/Interface/ScreenController.cpp",
+  "output": "CMakeFiles/SC.dir/C_/Grafi/Interface/ScreenController.cpp.obj"
+},
+{
+  "directory": "C:/Grafi/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DSFML_STATIC @CMakeFiles/Grafi.dir/includes_CXX.rsp -g -o CMakeFiles\\Grafi.dir\\main.cpp.obj -c C:\\Grafi\\main\\main.cpp",
+  "file": "C:/Grafi/main/main.cpp",
+  "output": "CMakeFiles/Grafi.dir/main.cpp.obj"
+}
+]

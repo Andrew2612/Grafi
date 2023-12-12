@@ -1,0 +1,2 @@
+C:\msys64\mingw64\bin\ar.exe qc libIH.a CMakeFiles/IH.dir/C_/Grafi/Interface/InputHandler.cpp.obj
+C:\msys64\mingw64\bin\ranlib.exe libIH.a

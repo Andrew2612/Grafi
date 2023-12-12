@@ -1,7 +1,6 @@
 #include<SFML/Graphics.hpp>
-#include"../Interface/ScreenController.cpp"
-#include"../Interface/InputHandler.cpp"
-#include<iostream>
+#include"../Interface/ScreenController.hpp"
+#include"../Interface/InputHandler.hpp"
 
 int main()
 {

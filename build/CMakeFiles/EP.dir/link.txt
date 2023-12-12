@@ -1,0 +1,2 @@
+C:\msys64\mingw64\bin\ar.exe qc libEP.a CMakeFiles/EP.dir/C_/Grafi/EdgeAndPoint/Edge_Point.cpp.obj
+C:\msys64\mingw64\bin\ranlib.exe libEP.a

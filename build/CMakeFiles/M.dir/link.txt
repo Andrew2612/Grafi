@@ -1,0 +1,2 @@
+C:\msys64\mingw64\bin\ar.exe qc libM.a CMakeFiles/M.dir/C_/Grafi/Map/Map.cpp.obj
+C:\msys64\mingw64\bin\ranlib.exe libM.a
