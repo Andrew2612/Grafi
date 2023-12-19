@@ -26,12 +26,14 @@ private:
 
     std::vector<Point*> points;
     std::vector<Edge*> edges;
+    std::vector<Point*> places;
 
     void ReadMapInfo();
 
     u32 BuildMap(u32 j);
     u32 CreatePoints(u32 j, Point::PointType t);
     u32 CreateEdges(u32 j);
+    u32 CreatePlaces(u32 j);
 
     enum struct TokenType {
         T_LSQUARE, T_RSQUARE, T_LCURLY, T_RCURLY,
@@ -78,12 +80,17 @@ struct Map
 
     sf::Texture map_texture;
     sf::Sprite map_sprite;
+
     std::vector<Point*> points;
     std::vector<Edge*> edges;
+    std::vector<Point*> places;
 
     void CreatePoint(const float posX, const float posY, const std::string& name, Point::PointType t);
 
-    void CreateEdge(const u32 origin, const u32 dest, const u32 weight);
+    void CreateEdge(const u32 origin, const u32 dest, const u32 scale);
+    void AddEdge(const u32 place_origin, const u32 point_dest, const u32 scale);
+
+    void CreatePlace(const float posX, const float posY, const std::string& name, const u32 closest);
 };
 
 

@@ -42,15 +42,15 @@ void Screen::Close()
 void Screen::LoadMenu()
 {
     DeleteObjects();
-    CreateButton({SCREEN_CENTER.x, SCREEN_CENTER.y - 60}, &Close, "Exit");
-    CreateButton({SCREEN_CENTER.x, SCREEN_CENTER.y + 60}, &LoadMap1, "First Map");
+    CreateButton({SCREEN_CENTER.x - 20, SCREEN_CENTER.y - 60}, &Close, "Exit");
+    CreateButton({SCREEN_CENTER.x - 20, SCREEN_CENTER.y + 60}, &LoadMap1, "Moscow Map");
 }
 
 
 void Screen::LoadMapInterface()
 {
-    CreateButton({70, 50}, &LoadMenu, "Menu");
-    CreateButton({2*SCREEN_CENTER.x - 70, 50}, &Close, "Exit");
+    CreateButton({60, 40}, &LoadMenu, "Menu");
+    CreateButton({2*SCREEN_CENTER.x - 60, 40}, &Close, "Exit");
 }
 
 
@@ -76,6 +76,10 @@ void Screen::Update()
         {
             window.draw(*map->points[i]->Shape());
         }
+        for (u32 i = 0; i < map->places.size(); i++)
+        {
+            window.draw(*map->places[i]->Shape());
+        }
         if (!point_label.getString().isEmpty())
         {
             window.draw(point_label);
@@ -95,15 +99,10 @@ void Screen::Update()
 
 void Screen::CreateButton(const sf::Vector2f pos, void (Screen::*f)(), const std::string text)
 {
-    sf::RectangleShape* shape = new sf::RectangleShape({120, 60});
-    shape->setFillColor(sf::Color::Blue);
-    shape->setOrigin(sf::Vector2f(60, 30));
-    shape->setPosition(pos);
-
-    buttons.push_back(new Button(shape, this, f, text, font));
+    buttons.push_back(new Button(pos, this, f, text, font));
 }
 
-void Screen::SetPointLabel(int index)
+void Screen::SetPointLabel(int index, bool for_point)
 {
     if (index < 0)
     {
@@ -113,14 +112,23 @@ void Screen::SetPointLabel(int index)
         return;
     }
 
-    point_label.setString(map->points[index]->Name());
-    if (map->points[index]->Type() == Point::PointType::Metro)
+    if (for_point)
     {
-        point_label.setFillColor(sf::Color::Yellow);
+        point_label.setString(map->points[index]->Name());
+        if (map->points[index]->Type() == Point::PointType::Metro)
+        {
+            point_label.setFillColor(sf::Color::Yellow);
+        }
+        else if (map->points[index]->Type() == Point::PointType::Street)
+        {
+            point_label.setFillColor({30, 144, 255});
+        }
+        point_label.setPosition(sf::Vector2f(-50, 15) + map->points[index]->Shape()->getPosition());
     }
-    else if (map->points[index]->Type() == Point::PointType::Street)
+    else
     {
-        point_label.setFillColor({30, 144, 255});
+        point_label.setString(map->places[index]->Name());
+        point_label.setPosition(sf::Vector2f(-50, 15) + map->places[index]->Shape()->getPosition());
+        point_label.setFillColor(sf::Color::Red);
     }
-    point_label.setPosition(sf::Vector2f(-40, 15) + map->points[index]->Shape()->getPosition());
 }

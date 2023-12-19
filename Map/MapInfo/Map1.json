@@ -328,6 +328,20 @@
             "posY": 857
         }
     ],
+    "places": [
+        {
+            "name": "Kremlin",
+            "posX": 700,
+            "posY": 720,
+            "closest": 51
+        },
+        {
+            "name": "Tretyakovskaya Galereya",
+            "posX": 790,
+            "posY": 1120,
+            "closest": 22
+        }
+    ],
     "edges": [
         25,
         4,
@@ -445,7 +459,12 @@
         51
     ],
     "edges": [
+        46,
+        5
+    ],
+    "edges": [
         8,
-        50
+        50,
+        9
     ]
 }

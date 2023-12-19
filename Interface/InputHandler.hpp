@@ -17,6 +17,8 @@ class InputHandler
 private:
     std::vector<u32> way;
     i32 origin_waypoint = -1;
+    bool from_place = false;
+    bool to_place = false;
 
     Screen* sc;
 
@@ -25,6 +27,7 @@ private:
     sf::Vector2f mouse_prev_pos;
     sf::Vector2f mouse_pos;
     i32 current_point_index;
+    i32 current_place_index;
 
     sf::Clock clock;
     const float CLICK_TIME = 0.3f;
@@ -32,7 +35,7 @@ private:
     float current_zoom = 1;
     const float ZOOM_SPEED = 0.95;
 
-    i32 GetPointTargetIndex();
+    i32 GetPointTargetIndex(bool for_point);
     void OnClick();
     void Move();
     void Scroll(i32 scroll);

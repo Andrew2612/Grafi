@@ -14,6 +14,11 @@ Map::~Map()
         delete edges[i];
     }
     edges.clear();
+
+    for (u32 i = 0; i < places.size(); i++) {
+        delete places[i];
+    }
+    places.clear();
 }
 
 void Map::CreatePoint(const float posX, const float posY, const std::string& name, Point::PointType t)
@@ -21,16 +26,25 @@ void Map::CreatePoint(const float posX, const float posY, const std::string& nam
     points.push_back(new Point(points.size(), posX, posY, name, t));
 }
 
-void Map::CreateEdge(const u32 origin, const u32 dest, const u32 weight)
+void Map::CreateEdge(const u32 origin, const u32 dest, const u32 sclae)
 {
-    edges.push_back(new Edge(points[origin], points[dest], weight));
+    edges.push_back(new Edge(points[origin], points[dest], scale));
+}
+void Map::AddEdge(const u32 place_origin, const u32 point_dest, const u32 scale)
+{
+    edges.push_back(new Edge(places[place_origin], points[point_dest], scale));
+}
+
+void Map::CreatePlace(const float posX, const float posY, const std::string& name, const u32 closest)
+{
+    places.push_back(new Point(closest, posX, posY, name, Point::PointType::Place));
 }
 
 
 void Assert(bool cond, const char* cond_str) {
-  if (!cond) {
-    throw std::logic_error(std::string("Assertion failed:   ") + cond_str);
-  }
+    if (!cond) {
+        throw std::logic_error(std::string("Assertion failed:   ") + cond_str);
+    }
 }
 
 #define ASSERT(c)  do { Assert((c), #c); } while(0);
@@ -81,12 +95,13 @@ void MapReader::ReadMapInfo()
             {
                 i = CreateEdges(i+1);
             }
+            if (tokens[i].value_str == "places") {
+                i = CreatePlaces(i+1);
+            }
         }
         i++;
     }
 }
-
-
 
 u32 MapReader::BuildMap(u32 j)
 {
@@ -117,6 +132,43 @@ u32 MapReader::BuildMap(u32 j)
     map->scale = scale;
 
     return j + 1;
+}
+
+u32 MapReader::CreatePlaces(u32 j)
+{
+    u32 posX, posY, closest;
+    std::string name;
+    std::string current_param;
+    u32 counter = 0;
+
+    while (tokens[j].type != TokenType::T_RSQUARE)
+    {
+        if(tokens[j].type == TokenType::T_STRING)
+        {
+            if (tokens[j+2].type == TokenType::T_STRING) {
+                counter++;
+                name = tokens[j+2].value_str;
+                j+= 2;
+            }
+            else {
+                current_param = tokens[j].value_str;
+            }
+        }
+        else if (tokens[j].type == TokenType::T_INTEGER)
+        {
+            if (current_param == "posX") {posX = tokens[j].value_int; counter++;}
+            else if (current_param == "posY") {posY = tokens[j].value_int; counter++;}
+            else if (current_param == "closest") {closest = tokens[j].value_int; counter++;}
+        }
+
+        if (counter == 4)
+        {
+            map->CreatePlace(static_cast<float>(posX), static_cast<float>(posY), name, closest);
+            counter = 0;
+        }
+        j++;
+    }
+    return j+1;
 }
 
 u32 MapReader::CreatePoints(u32 j, const Point::PointType t)
@@ -175,10 +227,10 @@ u32 MapReader::CreateEdges(u32 j)
     return j + 1;
 }
 
-i64 MapReader::ReadInteger(std::istream& is) {
+i64 MapReader::ReadInteger(std::istream& is)
+{
     i64 val = 0;
     bool negative = false;
-    
 
     char c = is.peek();
     if ((c == '-') || (c == '+')) {
@@ -233,14 +285,14 @@ bool MapReader::ReadComplexChar(char * symbol, std::istream& is)
 {
     char candidate = is.peek();
     if(candidate == '\\'){
-      is.get();
-      *symbol = is.peek();
-      is.get();
-      switch(*symbol){
-        case 'n': *symbol = '\n'; break;
-        case 'r': *symbol = '\r'; break;
+        is.get();
+        *symbol = is.peek();
+        is.get();
+        switch(*symbol){
+            case 'n': *symbol = '\n'; break;
+            case 'r': *symbol = '\r'; break;
 
-        default: break;
+            default: break;
       }
       return true;
     }
@@ -269,7 +321,7 @@ std::string MapReader::ReadString(std::istream& is){
 void MapReader::EatWhitespace(std::istream& is)
 {
     while (isspace(is.peek())) {
-      is.get();
+        is.get();
     }
 }
 
@@ -300,41 +352,41 @@ MapReader::Token MapReader::ReadNextToken(std::istream& is)
     char c = is.peek();
 
     if (c == '"') {
-      auto s = ReadString(is);
-      return MakeStringToken(s);
+        auto s = ReadString(is);
+        return MakeStringToken(s);
     } else if (isdigit(c) || (c == '+') || (c == '-')) {
-      auto s = ReadInteger(is);
-      return MakeIntegerToken(s);
+        auto s = ReadInteger(is);
+        return MakeIntegerToken(s);
     } else if (is_letter(c)) {
-      auto s = ReadLiteral(is);
-      if (s == "true") {
-        return MakeRawToken(TokenType::T_TRUE);
-      } else if (s == "false") {
-        return MakeRawToken(TokenType::T_FALSE);
-      } else if (s == "null") {
-        Assert(false, "NULL is not supported");
-      } else {
-        std::string err = "Unexpected literal " + s;
-        Assert(false, err.c_str());
+        auto s = ReadLiteral(is);
+        if (s == "true") {
+            return MakeRawToken(TokenType::T_TRUE);
+        } else if (s == "false") {
+            return MakeRawToken(TokenType::T_FALSE);
+        } else if (s == "null") {
+            Assert(false, "NULL is not supported");
+        } else {
+            std::string err = "Unexpected literal " + s;
+            Assert(false, err.c_str());
       }
     } else if (c == '[') {
-      is.get();
+        is.get();
       return MakeRawToken(TokenType::T_LSQUARE);
     } else if (c == ']') {
-      is.get();
+        is.get();
       return MakeRawToken(TokenType::T_RSQUARE);
     } else if (c == '{') {
-      is.get();
-      return MakeRawToken(TokenType::T_LCURLY);
+        is.get();
+        return MakeRawToken(TokenType::T_LCURLY);
     } else if (c == '}') {
-      is.get();
-      return MakeRawToken(TokenType::T_RCURLY);
+        is.get();
+        return MakeRawToken(TokenType::T_RCURLY);
     } else if (c == ',') {
-      is.get();
-      return MakeRawToken(TokenType::T_COMMA);
+        is.get();
+        return MakeRawToken(TokenType::T_COMMA);
     } else if (c == ':') {
-      is.get();
-      return MakeRawToken(TokenType::T_COLON);
+        is.get();
+        return MakeRawToken(TokenType::T_COLON);
     }
 
     if (is.eof()) return MakeRawToken(TokenType::T_EOF);

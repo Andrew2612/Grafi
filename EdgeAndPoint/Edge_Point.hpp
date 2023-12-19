@@ -49,9 +49,9 @@ private:
 class Point
 {
 public:
-    enum PointType {Metro, Street};
+    enum PointType {Metro, Street, Place};
 
-    Point(const int num, const float posX,
+    Point(const u32 num, const float posX,
         const float posY, const std::string& name_, const PointType t);
     ~Point() {delete shape;}
 
@@ -61,6 +61,7 @@ public:
     Point& operator=(Point&& p) = delete;
 
     sf::Shape* Shape() const noexcept {return shape;}
+
     std::string Name() const noexcept {return name;}
     u32 PointNumber() const noexcept {return point_number;}
     PointType Type() const noexcept {return type;}
@@ -76,7 +77,8 @@ private:
 
     PointType type;
     std::string name; 
-    int point_number;
+    u32 point_number;
+    u32 closest;
 };
 
 #endif

@@ -841,10 +841,10 @@ CMakeFiles/ContinuousSubmit.dir/clean:
 # Target rules for target CMakeFiles/Grafi.dir
 
 # All Build rule for target.
-CMakeFiles/Grafi.dir/all: CMakeFiles/EP.dir/all
-CMakeFiles/Grafi.dir/all: CMakeFiles/M.dir/all
 CMakeFiles/Grafi.dir/all: CMakeFiles/IH.dir/all
 CMakeFiles/Grafi.dir/all: CMakeFiles/SC.dir/all
+CMakeFiles/Grafi.dir/all: CMakeFiles/EP.dir/all
+CMakeFiles/Grafi.dir/all: CMakeFiles/M.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Grafi.dir\build.make CMakeFiles/Grafi.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\Grafi.dir\build.make CMakeFiles/Grafi.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:\Grafi\build\CMakeFiles --progress-num=3,4 "Built target Grafi"

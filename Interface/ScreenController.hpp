@@ -39,9 +39,7 @@ private:
 
     void CreateButton(const sf::Vector2f pos, void (Screen::*f)(), const std::string text);
 
-    void CreatePoint(sf::Vector2f pos);
-
-    void SetPointLabel(int index);
+    void SetPointLabel(int index, bool for_point);
 
     void DeleteObjects();
 

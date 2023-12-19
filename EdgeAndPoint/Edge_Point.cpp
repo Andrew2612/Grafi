@@ -7,7 +7,7 @@
 
 using u32 = uint32_t;
 
-Point::Point(const int num, const float posX, const float posY, 
+Point::Point(const u32 num, const float posX, const float posY, 
         const std::string& name_, const PointType t)
         : point_number(num), name(name_), type(t)
 {
@@ -27,19 +27,27 @@ Point::Point(const int num, const float posX, const float posY,
         shape->setPosition({posX - radius, posY - radius});
         point_texture.loadFromFile("../EdgeAndPoint/Street.png");
         shape->setTexture(&point_texture);
+        break;
+    case PointType::Place:
+        shape = new sf::CircleShape(radius, radius);
+        shape->setOrigin(radius/2, radius/2);
+        shape->setPosition(posX, posY);
+        point_texture.loadFromFile("../EdgeAndPoint/Place.jpg");
+        shape->setTexture(&point_texture);
+        break;
     }
 }
 
 std::vector<u32> Point::FindPath(const std::vector<Edge*>& edges, const u32 num_of_points, u32 destination_num) const
 {
-    float distance[num_of_points];
-    for (u32 i = 0; i < num_of_points; i++)
+    float *distance = new float[num_of_points];
+    for (int i = 0; i < num_of_points; i++)
     {
         distance[i] = INT_MAX;
     }
     distance[point_number] = 0;
 
-    int edge_to_prev[num_of_points] = {-1};
+    int *edge_to_prev = new int[num_of_points]{-1};
 
     for (u32 i = 0; i < num_of_points; i++)
     {
@@ -82,8 +90,12 @@ std::vector<u32> Point::FindPath(const std::vector<Edge*>& edges, const u32 num_
         else {tmp = d;}
     }
     way.push_back(distance[destination_num]);
+
+    delete[] edge_to_prev;
+    delete[] distance;
     return way;
 }
+
 
 Edge::Edge(Point* ori, Point* dest, const u32 scale, const bool singleSided)
     : destination(dest), origin(ori), single_sided(singleSided)
@@ -140,3 +152,4 @@ void Edge::TurnOn()
 }
 
 void Edge::TurnOff() {line.setFillColor(sf::Color::Black);}
+
